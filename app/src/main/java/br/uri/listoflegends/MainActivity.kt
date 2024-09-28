@@ -8,6 +8,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -15,6 +16,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Card
+import androidx.compose.material3.Label
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -23,13 +25,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import br.com.uri.champions.ui.theme.BlueLol
+import br.com.uri.champions.ui.theme.GoldLol
 import br.com.uri.champions.ui.theme.ListofLegendsTheme
 import br.uri.listoflegends.models.ChampionModel
 import br.uri.listoflegends.models.Sprite
@@ -63,27 +70,30 @@ fun ChampionListScreen() {
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
-        // Fundo de céu estrelado
         Image(
-            painter = painterResource(id = R.drawable.background),
+            painter = painterResource(id = R.drawable.rift),
             contentDescription = null,
-            modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.FillBounds
+            contentScale = ContentScale.FillBounds,
+            modifier = Modifier
+                .fillMaxSize()
+                .background(BlueLol)
         )
 
-        Column(modifier = Modifier.fillMaxSize()) {
+        Column(modifier = Modifier.fillMaxSize()
+        ) {
             BasicTextField(
                 value = searchQuery,
                 onValueChange = { searchQuery = it },
-                textStyle = TextStyle(color = Color.Black),
+                textStyle = TextStyle(color = BlueLol),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
-                    .background(Color.LightGray, shape = MaterialTheme.shapes.medium)
+                    .border(2.dp, GoldLol, shape = RoundedCornerShape(16.dp))
+                    .background(BlueLol, shape = RoundedCornerShape(16.dp))
                     .padding(16.dp)
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
             // Filtered list of champions based on the search query
             val filteredChampions = if (searchQuery.isEmpty()) {
@@ -120,16 +130,19 @@ fun ChampionCard(champion: ChampionModel) {
 
     Card(
         onClick = { /* TODO: Handle click */ },
+        shape = RoundedCornerShape(16.dp),
         modifier = Modifier
-            .padding(8.dp)
+            .padding(6.dp)
             .fillMaxWidth()
             .aspectRatio(1f)
             .clip(RoundedCornerShape(16.dp))
+            .border(2.dp, GoldLol, shape = RoundedCornerShape(16.dp))
+            .background(BlueLol)
     ) {
         Column(
             modifier = Modifier
-                .padding(8.dp)
-                .fillMaxSize(),
+                .fillMaxSize()
+                .background(BlueLol),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             bitmap?.let {
@@ -137,14 +150,16 @@ fun ChampionCard(champion: ChampionModel) {
                     bitmap = it.asImageBitmap(),
                     contentDescription = champion.name,
                     modifier = Modifier
+                        .padding(8.dp)
                         .size(120.dp)
-                        .padding(bottom = 8.dp),
+                        .padding(bottom = 8.dp)
+                        .background(BlueLol),
                     contentScale = ContentScale.Crop
                 )
             }
             Text(
                 text = champion.name,
-                style = MaterialTheme.typography.bodyLarge,
+                style = MaterialTheme.typography.bodyLarge.copy(color = Color.White)
             )
         }
     }
