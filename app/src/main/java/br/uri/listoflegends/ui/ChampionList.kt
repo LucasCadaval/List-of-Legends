@@ -23,7 +23,7 @@ import br.uri.listoflegends.models.ChampionModel
 import br.uri.listoflegends.services.fetchChampions
 
 @Composable
-fun ChampionList() {
+fun ChampionList(onChampionClick: (ChampionModel) -> Unit) {
     var champions by remember { mutableStateOf<List<ChampionModel>?>(null) }
     var searchQuery by remember { mutableStateOf("") }
     var responseCode by remember { mutableStateOf(-1) }
@@ -72,7 +72,7 @@ fun ChampionList() {
                     modifier = Modifier.padding(8.dp)
                 ) {
                     items(filteredChampions!!) { champion ->
-                        ChampionCard(champion)
+                        ChampionCard(champion, onChampionClick)
                     }
                 }
             }
