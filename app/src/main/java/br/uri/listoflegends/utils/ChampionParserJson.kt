@@ -2,6 +2,7 @@ package br.uri.listoflegends.utils
 
 import br.uri.listoflegends.models.ChampionModel
 import br.uri.listoflegends.models.Sprite
+import br.uri.listoflegends.models.Stats
 import org.json.JSONArray
 import java.util.Vector
 
@@ -24,7 +25,32 @@ fun parseChampionsFromJson(jsonResponse: String): List<ChampionModel> {
             }
         }
 
-        val stats = jsonObject.optString("stats", null)
+        val statsObject = jsonObject.optJSONObject("stats")
+        val stats = statsObject?.let {
+            Stats(
+                hp = it.getInt("hp"),
+                hpperlevel = it.getInt("hpperlevel"),
+                mp = it.getInt("mp"),
+                mpperlevel = it.getInt("mpperlevel"),
+                movespeed = it.getInt("movespeed"),
+                armor = it.getDouble("armor"),
+                armorperlevel = it.getDouble("armorperlevel"),
+                spellblock = it.getInt("spellblock"),
+                spellblockperlevel = it.getDouble("spellblockperlevel"),
+                attackrange = it.getInt("attackrange"),
+                hpregen = it.getDouble("hpregen"),
+                hpregenperlevel = it.getDouble("hpregenperlevel"),
+                mpregen = it.getInt("mpregen"),
+                mpregenperlevel = it.getDouble("mpregenperlevel"),
+                crit = it.getInt("crit"),
+                critperlevel = it.getInt("critperlevel"),
+                attackdamage = it.getDouble("attackdamage"),
+                attackdamageperlevel = it.getDouble("attackdamageperlevel"),
+                attackspeed = it.getDouble("attackspeed"),
+                attackspeedperlevel = it.getDouble("attackspeedperlevel")
+            )
+        }
+
         val icon = jsonObject.optString("icon", null)
 
         val spriteObject = jsonObject.optJSONObject("sprite")

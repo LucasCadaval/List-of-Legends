@@ -1,6 +1,7 @@
 package br.uri.listoflegends.ui
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Bitmap
 import android.util.Log
 import androidx.compose.foundation.Image
@@ -36,15 +37,17 @@ import androidx.compose.ui.unit.dp
 import br.com.uri.champions.ui.theme.BlueLol
 import br.com.uri.champions.ui.theme.GoldLol
 import br.uri.listoflegends.models.ChampionModel
+import br.uri.listoflegends.models.Sprite
 import br.uri.listoflegends.services.getImageFromUrl
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Composable
-fun ChampionCard(champion: ChampionModel) {
+fun ChampionCard(champion: ChampionModel,onChampionClick: (ChampionModel) -> Unit) {
     val coroutineScope = rememberCoroutineScope()
     var bitmap by remember { mutableStateOf<Bitmap?>(null) }
+    val context = LocalContext.current
 
     LaunchedEffect(champion.icon) {
         coroutineScope.launch(Dispatchers.IO) {
@@ -53,7 +56,9 @@ fun ChampionCard(champion: ChampionModel) {
     }
 
     Card(
-        onClick = { /*TODO*/ },
+        onClick = {
+            onChampionClick(champion)
+        },
         modifier = Modifier
             .padding(6.dp)
             .fillMaxWidth()
