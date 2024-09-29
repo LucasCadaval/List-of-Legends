@@ -12,6 +12,7 @@ import androidx.compose.runtime.setValue
 import br.com.uri.champions.ui.theme.ListofLegendsTheme
 import br.uri.listoflegends.activities.ChampionScreen
 import br.uri.listoflegends.ui.ChampionList
+import br.uri.listoflegends.ui.SplashScreen
 import br.uri.listoflegends.ui.TopBar
 import br.uri.listoflegends.utils.Screen
 
@@ -22,7 +23,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ListofLegendsTheme {
-                var currentScreen by remember { mutableStateOf<Screen>(Screen.ChampionList) }
+                var currentScreen by remember { mutableStateOf<Screen>(Screen.Splash) }
 
                 Scaffold(
                     topBar = {
@@ -34,8 +35,11 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                     }
-                ) {  paddingValues ->
+                ) { paddingValues ->
                     when (currentScreen) {
+                        is Screen.Splash -> SplashScreen {
+                            currentScreen = Screen.ChampionList
+                        }
                         is Screen.ChampionList -> ChampionList(
                             onChampionClick = { champion ->
                                 currentScreen = Screen.ChampionDetail(champion)
