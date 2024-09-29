@@ -13,7 +13,7 @@ This Android application provides a List with all League of Legends champions us
 <br>
 
 ## 🔍 Overview
-<img src="https://github.com/LucasCadaval/List-of-Legends/blob/Readme/Screenshots/App_Video.mp4" width="25%" align="right"/>
+<img src="https://github.com/LucasCadaval/List-of-Legends/blob/Readme/Screenshots/app_video.gif" width="25%" align="right"/>
 
 - Minimum SDK level 24
 - Target SDK level 34
@@ -29,7 +29,7 @@ This Android application provides a List with all League of Legends champions us
 <p align="center">
 <img src="https://github.com/LucasCadaval/List-of-Legends/blob/Readme/Screenshots/splash_screen.jpg" width="30%"/>
 <img src="https://github.com/LucasCadaval/List-of-Legends/blob/Readme/Screenshots/champions_list.jpg" width="30%"/>
-<img src="https://github.com/LucasCadaval/List-of-Legends/blob/Readme/Screenshots/champions_screen.jpg" width="30%"/>
+<img src="https://github.com/LucasCadaval/List-of-Legends/blob/Readme/Screenshots/champion_screen.jpg" width="30%"/>
 </p>
 
 <br>
