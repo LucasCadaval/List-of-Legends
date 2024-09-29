@@ -5,6 +5,8 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
@@ -27,10 +29,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import br.com.uri.champions.ui.theme.BlueLol
+import br.com.uri.champions.ui.theme.GoldLol
 import br.uri.listoflegends.models.ChampionModel
 import br.uri.listoflegends.models.Sprite
 import br.uri.listoflegends.services.getImageFromUrl
@@ -55,11 +60,17 @@ fun ChampionCard(champion: ChampionModel,onChampionClick: (ChampionModel) -> Uni
             onChampionClick(champion)
         },
         modifier = Modifier
-            .padding(8.dp)
-            .size(150.dp)
+            .padding(6.dp)
+            .fillMaxWidth()
+            .aspectRatio(1f)
+            .clip(RoundedCornerShape(16.dp))
+            .border(2.dp, GoldLol, shape = RoundedCornerShape(16.dp))
+            .background(BlueLol)
     ) {
         Box(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .background(BlueLol),
             contentAlignment = Alignment.Center
         ) {
             bitmap?.let {
@@ -67,13 +78,17 @@ fun ChampionCard(champion: ChampionModel,onChampionClick: (ChampionModel) -> Uni
                     bitmap = it.asImageBitmap(),
                     contentDescription = champion.name,
                     modifier = Modifier
-                        .size(125.dp)
-                        .padding(bottom = 12.dp) // Add padding here
+                        .padding(8.dp)
+                        .size(120.dp)
+                        .padding(bottom = 8.dp)
+                        .background(BlueLol),
+                    contentScale = ContentScale.Crop // Add padding here
                 )
             }
             Text(
                 text = champion.name,
-                modifier = Modifier.align(Alignment.BottomCenter)
+                modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 6.dp),
+                style = MaterialTheme.typography.titleMedium.copy(color = GoldLol)
             )
         }
     }
