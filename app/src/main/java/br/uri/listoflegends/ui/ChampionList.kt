@@ -50,19 +50,28 @@ fun ChampionList() {
         )
 
         Column(modifier = Modifier.fillMaxSize()) {
-            BasicTextField(
-                value = searchQuery,
-                onValueChange = { searchQuery = it },
-                textStyle = TextStyle(color = BlueLol),
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
                     .border(2.dp, GoldLol, shape = RoundedCornerShape(16.dp))
                     .background(BlueLol, shape = RoundedCornerShape(16.dp))
                     .padding(16.dp)
-            )
+            ) {
+                if (searchQuery.isEmpty()) {
+                    Text(
+                        text = "Pesquisar...",
+                        color = Color.Gray,
+                    )
+                }
 
-            Spacer(modifier = Modifier.height(8.dp))
+                BasicTextField(
+                    value = searchQuery,
+                    onValueChange = { searchQuery = it },
+                    textStyle = TextStyle(color = Color.White),
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
 
             if (champions == null) {
                 Text("Loading...")
