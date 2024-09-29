@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/LucasCadaval/List-of-Legends/tree/master/app/src/main/res/drawable/logo2.png" alt="logo" style="width:75%;">
+  <img src="https://github.com/LucasCadaval/List-of-Legends/blob/Readme/app/src/main/res/drawable/logo2.png" alt="logo" style="width:75%;">
 </p>
 <br>
 
