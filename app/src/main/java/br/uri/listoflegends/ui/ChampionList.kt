@@ -1,5 +1,6 @@
 package br.uri.listoflegends.ui
 
+import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -16,7 +17,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.HorizontalAlignmentLine
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
@@ -25,6 +28,7 @@ import br.com.uri.champions.ui.theme.GoldLol
 import br.uri.listoflegends.R
 import br.uri.listoflegends.models.ChampionModel
 import br.uri.listoflegends.services.fetchChampions
+import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @Composable
 fun ChampionList(onChampionClick: (ChampionModel) -> Unit) {
@@ -40,6 +44,7 @@ fun ChampionList(onChampionClick: (ChampionModel) -> Unit) {
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
+        val alpha = remember { Animatable(0f) }
         Image(
             painter = painterResource(id = R.drawable.rift),
             contentDescription = null,

@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import br.com.uri.champions.ui.theme.BlueLol
@@ -45,6 +46,15 @@ fun SplashScreen(onTimeout: () -> Unit) {
             .background(BlueLol),
         contentAlignment = Alignment.Center
     ) {
+        Image(
+            painter = painterResource(id = R.drawable.rift),
+            contentDescription = null,
+            contentScale = ContentScale.FillBounds,
+            modifier = Modifier
+                .fillMaxSize()
+                .background(BlueLol)
+        )
+
         Column(
             modifier = Modifier,
             horizontalAlignment = Alignment.CenterHorizontally
