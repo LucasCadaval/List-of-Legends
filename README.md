@@ -22,7 +22,7 @@ This Android application provides a List with all League of Legends champions us
 
 - [Compose](https://developer.android.com/jetpack/compose)
 
-<br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 📷 Screenshots
 ----------
