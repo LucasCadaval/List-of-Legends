@@ -1,5 +1,7 @@
 package br.uri.listoflegends.ui
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
@@ -21,17 +23,22 @@ import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import br.com.uri.champions.ui.theme.BlueLol
 import br.com.uri.champions.ui.theme.GoldLol
 import br.uri.listoflegends.R
+import br.uri.listoflegends.services.sendNotification
 
 @Composable
 fun SplashScreen(onTimeout: () -> Unit) {
     val alpha = remember { Animatable(0f) }
+    val context = LocalContext.current
 
     LaunchedEffect(true) {
+        // sample usage
+        sendNotification("1", "The app started", "Splash Screen", context, 1)
         alpha.animateTo(
             targetValue = 1f,
             animationSpec = tween(durationMillis = 1000, easing = LinearEasing)
