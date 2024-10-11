@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.HorizontalAlignmentLine
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
@@ -27,6 +28,7 @@ import br.com.uri.champions.ui.theme.BlueLol
 import br.com.uri.champions.ui.theme.GoldLol
 import br.uri.listoflegends.R
 import br.uri.listoflegends.models.ChampionModel
+import br.uri.listoflegends.services.SharedPreferencesManager
 import br.uri.listoflegends.services.fetchChampions
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
@@ -35,11 +37,16 @@ fun ChampionList(onChampionClick: (ChampionModel) -> Unit) {
     var champions by remember { mutableStateOf<List<ChampionModel>?>(null) }
     var searchQuery by remember { mutableStateOf("") }
     var responseCode by remember { mutableStateOf(-1) }
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         fetchChampions { code, response ->
             responseCode = code
             champions = response
+            // salva champions no "localstorage"
+            SharedPreferencesManager.saveChampions(context, champions!!)
+            // pega champions no "localstorage"
+            // SharedPreferencesManager.getChampions(context, champions!!)
         }
     }
 
