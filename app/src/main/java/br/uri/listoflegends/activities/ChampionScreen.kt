@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -36,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -43,6 +45,8 @@ import br.uri.listoflegends.models.ChampionModel
 import br.uri.listoflegends.services.getImageFromUrl
 import br.uri.listoflegends.ui.TopBar
 import br.uri.listoflegends.utils.Screen
+import br.uri.listoflegends.utils.formatChampionForSharing
+import br.uri.listoflegends.utils.share
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -51,6 +55,7 @@ fun ChampionScreen(champion: ChampionModel) {
     val coroutineScope = rememberCoroutineScope()
     var bitmap by remember { mutableStateOf<Bitmap?>(null) }
     val gold = 0xFFC89B3C
+    val context = LocalContext.current
 
     LaunchedEffect(champion.icon) {
         coroutineScope.launch(Dispatchers.IO) {
@@ -114,6 +119,14 @@ fun ChampionScreen(champion: ChampionModel) {
 
                 Spacer(modifier = Modifier.height(24.dp))
 
+                Button(
+                    onClick = {
+                        val formattedChampion = formatChampionForSharing(champion)
+                        share(context, formattedChampion, bitmap)
+                    }
+                ) {
+                    Text("Compartilhar")
+                }
                 LazyColumn(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
@@ -161,7 +174,7 @@ fun ChampionScreen(champion: ChampionModel) {
 
                         items(statLabels) { (label, value) ->
                             Text(
-                                text = "$label: $value",
+                                text = " • $label: $value",
                                 color = Color.White,
                                 modifier = Modifier.padding(vertical = 2.dp)
                             )
