@@ -2,6 +2,8 @@ package br.uri.listoflegends.activities
 
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
+import android.media.MediaPlayer
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -21,6 +23,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -49,6 +52,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import br.uri.listoflegends.R
 import br.uri.listoflegends.models.ChampionModel
 import br.uri.listoflegends.services.getImageFromUrl
 import br.uri.listoflegends.ui.TopBar
@@ -64,6 +68,7 @@ fun ChampionScreen(champion: ChampionModel) {
     var bitmap by remember { mutableStateOf<Bitmap?>(null) }
     val gold = 0xFFC89B3C
     val context = LocalContext.current
+    var mediaPlayer: MediaPlayer? = null
 
     LaunchedEffect(champion.icon) {
         coroutineScope.launch(Dispatchers.IO) {
@@ -123,21 +128,51 @@ fun ChampionScreen(champion: ChampionModel) {
                             )
                         }
 
-                        IconButton(
-                            onClick = {
-                                val formattedChampion = formatChampionForSharing(champion)
-                                share(context, formattedChampion, bitmap)
-                            },
-                            colors = IconButtonDefaults.iconButtonColors(
-                                contentColor = Color(gold),
-                                containerColor = Color.Transparent
-                            ),
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Share,
-                                contentDescription = "Share",
-                                modifier = Modifier.size(24.dp)
-                            )
+                        Row {
+                            IconButton(
+                                onClick = {
+                                    val formattedChampion = formatChampionForSharing(champion)
+                                    share(context, formattedChampion, bitmap)
+                                },
+                                colors = IconButtonDefaults.iconButtonColors(
+                                    contentColor = Color(gold),
+                                    containerColor = Color.Transparent
+                                ),
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Share,
+                                    contentDescription = "Share",
+                                    modifier = Modifier.size(24.dp)
+                                )
+                            }
+
+                            IconButton(
+                                onClick = {
+                                    val championAudioFileName = champion.name.lowercase().replace(" ", "_")
+
+                                    val audioResId = context.resources.getIdentifier(championAudioFileName, "raw", context.packageName)
+
+                                    if (audioResId != 0) {
+                                        mediaPlayer = MediaPlayer.create(context, audioResId)
+                                        mediaPlayer?.start()
+                                        mediaPlayer?.setOnCompletionListener {
+                                            it.release()
+                                        }
+                                    } else {
+                                        Toast.makeText(context, "Áudio para o campeão ${champion.name} não encontrado.", Toast.LENGTH_SHORT).show()
+                                    }
+                                },
+                                colors = IconButtonDefaults.iconButtonColors(
+                                    contentColor = Color(gold),
+                                    containerColor = Color.Transparent
+                                ),
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.PlayArrow,
+                                    contentDescription = "Play Sound",
+                                    modifier = Modifier.size(24.dp)
+                                )
+                            }
                         }
                     }
                 }
