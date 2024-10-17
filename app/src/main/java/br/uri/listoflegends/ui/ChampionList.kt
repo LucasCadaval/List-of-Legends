@@ -30,23 +30,28 @@ import br.uri.listoflegends.R
 import br.uri.listoflegends.models.ChampionModel
 import br.uri.listoflegends.services.SharedPreferencesManager
 import br.uri.listoflegends.services.fetchChampions
+import br.uri.listoflegends.utils.parseChampionsFromJson
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @Composable
 fun ChampionList(onChampionClick: (ChampionModel) -> Unit) {
-    var champions by remember { mutableStateOf<List<ChampionModel>?>(null) }
     var searchQuery by remember { mutableStateOf("") }
     var responseCode by remember { mutableStateOf(-1) }
     val context = LocalContext.current
+//    SharedPreferencesManager.clearChampions(context)
+    val championsFromPreference = SharedPreferencesManager.getChampions(context)
+    val parsedChampions = championsFromPreference?.let {
+        parseChampionsFromJson(it)
+    }
 
-    LaunchedEffect(Unit) {
-        fetchChampions { code, response ->
-            responseCode = code
-            champions = response
-            // salva champions no "localstorage"
-            SharedPreferencesManager.saveChampions(context, champions!!)
-            // pega champions no "localstorage"
-            // SharedPreferencesManager.getChampions(context, champions!!)
+    var champions by remember { mutableStateOf<List<ChampionModel>?>(parsedChampions) }
+
+    if (parsedChampions == null) {
+        LaunchedEffect(Unit) {
+            fetchChampions(context) { code, response ->
+                responseCode = code
+                champions = response
+            }
         }
     }
 
