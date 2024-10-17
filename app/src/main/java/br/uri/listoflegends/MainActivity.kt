@@ -49,7 +49,7 @@ class MainActivity : ComponentActivity() {
 
                 Scaffold(
                     topBar = {
-                        if (currentScreen is Screen.ChampionDetail) {
+                        if (currentScreen is Screen.ChampionDetail || currentScreen is Screen.ChampionDraft) {
                             TopBar(
                                 onBackPressed = {
                                     currentScreen = Screen.ChampionList
