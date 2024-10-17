@@ -22,6 +22,8 @@ import br.uri.listoflegends.utils.Screen
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 class MainActivity : ComponentActivity() {
+    @SuppressLint("MissingSuperCall")
+    override fun onBackPressed() {}
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val context = this
