@@ -40,7 +40,6 @@ fun ChampionList(onTeamDraftCLick: () -> Unit, onChampionClick: (ChampionModel) 
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
-        val alpha = remember { Animatable(0f) }
         Image(
             painter = painterResource(id = R.drawable.rift),
             contentDescription = null,
@@ -82,7 +81,8 @@ fun ChampionList(onTeamDraftCLick: () -> Unit, onChampionClick: (ChampionModel) 
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
                     .align(Alignment.CenterHorizontally)
-                    .border(2.dp, GoldLol, shape = RoundedCornerShape(8.dp)),
+                    .border(2.dp, GoldLol, shape = RoundedCornerShape(16.dp))
+                    .height(36.dp),
                     colors = androidx.compose.material3.ButtonDefaults.buttonColors(containerColor = BlueLol)
             ) {
                 Text(text = "Team Draft", color = GoldLol)

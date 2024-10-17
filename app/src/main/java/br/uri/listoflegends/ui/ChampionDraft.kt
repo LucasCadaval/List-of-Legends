@@ -1,17 +1,31 @@
 package br.uri.listoflegends.ui
 
+import android.provider.CalendarContract.Colors
+import androidx.compose.animation.core.Animatable
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import br.com.uri.champions.ui.theme.BlueLol
+import br.com.uri.champions.ui.theme.GoldLol
+import br.uri.listoflegends.R
 import br.uri.listoflegends.models.ChampionModel
 import br.uri.listoflegends.services.fetchChampions
 
@@ -30,39 +44,61 @@ fun ChampionDraft() {
         }
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        if (champions == null) {
-            Text("Loading champions...")
-        } else {
-            Button(onClick = {
-                val shuffledChampions = champions!!.shuffled()
-                blueTeam = shuffledChampions.take(5)
-                redTeam = shuffledChampions.drop(5).take(5)
-            }) {
-                Text("Sortear Times")
-            }
+    Box(modifier = Modifier.fillMaxSize()) {
+        Image(
+            painter = painterResource(id = R.drawable.rift),
+            contentDescription = null,
+            contentScale = ContentScale.FillBounds,
+            modifier = Modifier
+                .fillMaxSize()
+                .background(BlueLol)
+        )
 
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Text(text = "Time Azul", color = Color.Blue)
-            LazyVerticalGrid(columns = GridCells.Fixed(2)) {
-                items(blueTeam) { champion ->
-                    ChampionCard(champion)
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            if (champions == null) {
+                Text("Loading champions...")
+            } else {
+                Button(onClick = {
+                    val shuffledChampions = champions!!.shuffled()
+                    blueTeam = shuffledChampions.take(5)
+                    redTeam = shuffledChampions.drop(5).take(5)
+                },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                        .align(Alignment.CenterHorizontally)
+                        .border(2.dp, GoldLol, shape = RoundedCornerShape(16.dp))
+                        .height(36.dp),
+                    colors = androidx.compose.material3.ButtonDefaults.buttonColors(containerColor = BlueLol)) {
+                    Text("Sortear Times", color = GoldLol)
                 }
-            }
 
-            Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
-            Text(text = "Time Vermelho", color = Color.Red)
-            LazyVerticalGrid(columns = GridCells.Fixed(2)) {
-                items(redTeam) { champion ->
-                    ChampionCard(champion)
+                OutlinedTextBlue()
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(3),
+                ) {
+                    items(blueTeam) { champion ->
+                        ChampionCard(champion, { null })
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                OutlinedTextRed()
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(3),
+                ) {
+                    items(redTeam) { champion ->
+                        ChampionCard(champion, { null })
+                    }
                 }
             }
         }
@@ -70,13 +106,101 @@ fun ChampionDraft() {
 }
 
 @Composable
-fun ChampionCard(champion: ChampionModel) {
-    Box(
-        modifier = Modifier
-            .padding(8.dp)
-            .background(Color.LightGray)
-            .fillMaxWidth()
-    ) {
-        Text(text = champion.name, modifier = Modifier.padding(16.dp))
+fun OutlinedTextBlue() {
+    Box {
+        Text(
+            text = "Time Azul",
+            style = TextStyle(
+                color = GoldLol,
+                fontSize = 40.sp,
+                fontWeight = FontWeight.Bold
+            ),
+            modifier = Modifier.offset(1.dp, 1.dp)
+        )
+        Text(
+            text = "Time Azul",
+            style = TextStyle(
+                color = GoldLol,
+                fontSize = 40.sp,
+                fontWeight = FontWeight.Bold
+            ),
+            modifier = Modifier.offset(-1.dp, 1.dp)
+        )
+        Text(
+            text = "Time Azul",
+            style = TextStyle(
+                color = GoldLol,
+                fontSize = 40.sp,
+                fontWeight = FontWeight.Bold
+            ),
+            modifier = Modifier.offset(1.dp, -1.dp)
+        )
+        Text(
+            text = "Time Azul",
+            style = TextStyle(
+                color = GoldLol,
+                fontSize = 40.sp,
+                fontWeight = FontWeight.Bold
+            ),
+            modifier = Modifier.offset(-1.dp, -1.dp)
+        )
+        Text(
+            text = "Time Azul",
+            style = TextStyle(
+                color = Color.Blue,
+                fontSize = 40.sp,
+                fontWeight = FontWeight.Bold
+            )
+        )
+    }
+}
+
+@Composable
+fun OutlinedTextRed() {
+    Box {
+        Text(
+            text = "Time Vermelho",
+            style = TextStyle(
+                color = GoldLol,
+                fontSize = 40.sp,
+                fontWeight = FontWeight.Bold
+            ),
+            modifier = Modifier.offset(1.dp, 1.dp)
+        )
+        Text(
+            text = "Time Vermelho",
+            style = TextStyle(
+                color = GoldLol,
+                fontSize = 40.sp,
+                fontWeight = FontWeight.Bold
+            ),
+            modifier = Modifier.offset(-1.dp, 1.dp)
+        )
+        Text(
+            text = "Time Vermelho",
+            style = TextStyle(
+                color = GoldLol,
+                fontSize = 40.sp,
+                fontWeight = FontWeight.Bold
+            ),
+            modifier = Modifier.offset(1.dp, -1.dp)
+        )
+        Text(
+            text = "Time Vermelho",
+            style = TextStyle(
+                color = GoldLol,
+                fontSize = 40.sp,
+                fontWeight = FontWeight.Bold
+            ),
+            modifier = Modifier.offset(-1.dp, -1.dp)
+        )
+        Text(
+            text = "Time Vermelho",
+            style = TextStyle(
+                color = Color.Red,
+                fontSize = 40.sp,
+                fontWeight = FontWeight.Bold
+            )
+        )
     }
 }
