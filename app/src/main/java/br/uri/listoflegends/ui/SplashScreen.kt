@@ -37,8 +37,7 @@ fun SplashScreen(onTimeout: () -> Unit) {
     val context = LocalContext.current
 
     LaunchedEffect(true) {
-        // sample usage
-        sendNotification("1", "The app started", "Splash Screen", context, 1)
+        sendNotification("1", "The app started", "This is the notification description", context, 1)
         alpha.animateTo(
             targetValue = 1f,
             animationSpec = tween(durationMillis = 1000, easing = LinearEasing)

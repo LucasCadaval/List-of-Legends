@@ -10,8 +10,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -34,7 +33,7 @@ import br.uri.listoflegends.utils.parseChampionsFromJson
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @Composable
-fun ChampionList(onChampionClick: (ChampionModel) -> Unit) {
+fun ChampionList(onTeamDraftCLick: () -> Unit, onChampionClick: (ChampionModel) -> Unit) {
     var searchQuery by remember { mutableStateOf("") }
     var responseCode by remember { mutableStateOf(-1) }
     val context = LocalContext.current
@@ -56,7 +55,6 @@ fun ChampionList(onChampionClick: (ChampionModel) -> Unit) {
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
-        val alpha = remember { Animatable(0f) }
         Image(
             painter = painterResource(id = R.drawable.rift),
             contentDescription = null,
@@ -88,6 +86,21 @@ fun ChampionList(onChampionClick: (ChampionModel) -> Unit) {
                     textStyle = TextStyle(color = Color.White),
                     modifier = Modifier.fillMaxWidth()
                 )
+            }
+
+            Button(
+                onClick ={
+                    onTeamDraftCLick()
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .align(Alignment.CenterHorizontally)
+                    .border(2.dp, GoldLol, shape = RoundedCornerShape(16.dp))
+                    .height(36.dp),
+                    colors = androidx.compose.material3.ButtonDefaults.buttonColors(containerColor = BlueLol)
+            ) {
+                Text(text = "Team Draft", color = GoldLol)
             }
 
             if (champions == null) {
