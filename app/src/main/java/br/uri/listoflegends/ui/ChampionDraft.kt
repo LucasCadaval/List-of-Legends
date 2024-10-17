@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -27,20 +28,32 @@ import br.com.uri.champions.ui.theme.BlueLol
 import br.com.uri.champions.ui.theme.GoldLol
 import br.uri.listoflegends.R
 import br.uri.listoflegends.models.ChampionModel
+import br.uri.listoflegends.services.SharedPreferencesManager
 import br.uri.listoflegends.services.fetchChampions
+import br.uri.listoflegends.utils.parseChampionsFromJson
 
 @Composable
 fun ChampionDraft() {
-    var champions by remember { mutableStateOf<List<ChampionModel>?>(null) }
     var responseCode by remember { mutableStateOf(-1) }
 
     var blueTeam by remember { mutableStateOf<List<ChampionModel>>(emptyList()) }
     var redTeam by remember { mutableStateOf<List<ChampionModel>>(emptyList()) }
 
-    LaunchedEffect(Unit) {
-        fetchChampions { code, response ->
-            responseCode = code
-            champions = response
+    val context = LocalContext.current
+//    SharedPreferencesManager.clearChampions(context)
+    val championsFromPreference = SharedPreferencesManager.getChampions(context)
+    val parsedChampions = championsFromPreference?.let {
+        parseChampionsFromJson(it)
+    }
+
+    var champions by remember { mutableStateOf<List<ChampionModel>?>(parsedChampions) }
+
+    if (parsedChampions == null) {
+        LaunchedEffect(Unit) {
+            fetchChampions(context) { code, response ->
+                responseCode = code
+                champions = response
+            }
         }
     }
 

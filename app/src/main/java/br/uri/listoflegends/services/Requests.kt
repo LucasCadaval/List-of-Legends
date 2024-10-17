@@ -1,8 +1,10 @@
 package br.uri.listoflegends.services
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
+import androidx.compose.ui.platform.LocalContext
 import br.uri.listoflegends.models.ChampionModel
 import br.uri.listoflegends.utils.parseChampionsFromJson
 import kotlinx.coroutines.CoroutineScope
@@ -12,7 +14,7 @@ import kotlinx.coroutines.withContext
 import java.net.HttpURLConnection
 import java.net.URL
 
-fun fetchChampions(callback: (Int, List<ChampionModel>?) -> Unit) {
+fun fetchChampions(context: Context, callback: (Int, List<ChampionModel>?) -> Unit) {
     CoroutineScope(Dispatchers.IO).launch {
         try {
             val url = URL("http://girardon.com.br:3001/champions")
@@ -21,6 +23,8 @@ fun fetchChampions(callback: (Int, List<ChampionModel>?) -> Unit) {
             val responseCode = connection.responseCode
 
             val response = connection.inputStream.bufferedReader().use { it.readText() }
+
+            SharedPreferencesManager.saveChampions(context, response)
 
             Log.d("NetworkResponse", "Code: $responseCode, JSON: $response")
 
