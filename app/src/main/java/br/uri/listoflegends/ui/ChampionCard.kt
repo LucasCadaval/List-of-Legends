@@ -82,7 +82,7 @@ fun ChampionCard(champion: ChampionModel,onChampionClick: (ChampionModel) -> Uni
                         .size(120.dp)
                         .padding(bottom = 8.dp)
                         .background(BlueLol),
-                    contentScale = ContentScale.Crop // Add padding here
+                    contentScale = ContentScale.Crop
                 )
             }
             Text(

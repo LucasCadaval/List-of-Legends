@@ -10,16 +10,13 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.HorizontalAlignmentLine
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
@@ -28,10 +25,9 @@ import br.com.uri.champions.ui.theme.GoldLol
 import br.uri.listoflegends.R
 import br.uri.listoflegends.models.ChampionModel
 import br.uri.listoflegends.services.fetchChampions
-import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @Composable
-fun ChampionList(onChampionClick: (ChampionModel) -> Unit) {
+fun ChampionList(onTeamDraftCLick: () -> Unit, onChampionClick: (ChampionModel) -> Unit) {
     var champions by remember { mutableStateOf<List<ChampionModel>?>(null) }
     var searchQuery by remember { mutableStateOf("") }
     var responseCode by remember { mutableStateOf(-1) }
@@ -76,6 +72,20 @@ fun ChampionList(onChampionClick: (ChampionModel) -> Unit) {
                     textStyle = TextStyle(color = Color.White),
                     modifier = Modifier.fillMaxWidth()
                 )
+            }
+
+            Button(
+                onClick ={
+                    onTeamDraftCLick()
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .align(Alignment.CenterHorizontally)
+                    .border(2.dp, GoldLol, shape = RoundedCornerShape(8.dp)),
+                    colors = androidx.compose.material3.ButtonDefaults.buttonColors(containerColor = BlueLol)
+            ) {
+                Text(text = "Team Draft", color = GoldLol)
             }
 
             if (champions == null) {
