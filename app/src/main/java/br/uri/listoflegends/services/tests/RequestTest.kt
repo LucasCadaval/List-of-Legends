@@ -1,20 +1,14 @@
 package br.uri.listoflegends.services.tests
 
-import android.content.Context
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
-import androidx.test.core.app.ApplicationProvider
 import br.uri.listoflegends.models.ChampionModel
 import br.uri.listoflegends.models.Sprite
 import br.uri.listoflegends.models.Stats
-import kotlinx.coroutines.runBlocking
-
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 
 
-class ChampionsScreenTest {
+class RequestTest {
 
     private lateinit var champions: List<ChampionModel>
 
@@ -106,6 +100,5 @@ class ChampionsScreenTest {
         assertEquals(1, filteredChampions.size)
         assertEquals("Aatrox", filteredChampions[0].name)
     }
-
 }
 
