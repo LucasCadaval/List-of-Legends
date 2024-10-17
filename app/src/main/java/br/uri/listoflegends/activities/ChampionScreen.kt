@@ -103,7 +103,6 @@ fun ChampionScreen(champion: ChampionModel) {
                                 contentDescription = champion.name,
                                 modifier = Modifier
                                     .fillMaxSize()
-                                    .padding(bottom = 12.dp)
                             )
                         }
                     }

@@ -18,6 +18,7 @@ import br.uri.listoflegends.activities.ChampionScreen
 import br.uri.listoflegends.ui.ChampionList
 import br.uri.listoflegends.ui.SplashScreen
 import br.uri.listoflegends.ui.TopBar
+import br.uri.listoflegends.ui.ChampionDraft
 import br.uri.listoflegends.utils.Screen
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -48,7 +49,7 @@ class MainActivity : ComponentActivity() {
 
                 Scaffold(
                     topBar = {
-                        if (currentScreen is Screen.ChampionDetail) {
+                        if (currentScreen is Screen.ChampionDetail || currentScreen is Screen.ChampionDraft) {
                             TopBar(
                                 onBackPressed = {
                                     currentScreen = Screen.ChampionList
@@ -64,12 +65,14 @@ class MainActivity : ComponentActivity() {
                         is Screen.ChampionList -> ChampionList(
                             onChampionClick = { champion ->
                                 currentScreen = Screen.ChampionDetail(champion)
-                            }
+                            },
+                            onTeamDraftCLick = { currentScreen = Screen.ChampionDraft}
                         )
                         is Screen.ChampionDetail -> {
                             val champion = (currentScreen as Screen.ChampionDetail).champion
                             ChampionScreen(champion)
                         }
+                        is Screen.ChampionDraft -> ChampionDraft()
                     }
                 }
             }
