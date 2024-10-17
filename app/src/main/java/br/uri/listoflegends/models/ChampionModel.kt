@@ -7,7 +7,7 @@ data class ChampionModel(
     val key: String?,
     val name: String,
     val title: String?,
-    val tags: Vector<String?>,
+    val tags: List<String?>,
     val stats: Stats?,
     val icon: String?,
     val sprite: Sprite?,
