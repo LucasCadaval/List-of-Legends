@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="search_hint">Pesquisar...</string>
+    <string name="team_draft">Seleção de Equipe</string>
+    <string name="loading">Carregando...</string>
+    <string name="share">Compartilhar</string>
+    <string name="play_sound">Reproduzir Som</string>
+    <string name="audio_not_found">Áudio para o campeão %1$s não encontrado.</string>
+    <string name="stats">Estatísticas:</string>
+    <string name="hp">HP</string>
+    <string name="hp_per_level">HP por Nível</string>
+    <string name="mp">MP</string>
+    <string name="mp_per_level">MP por Nível</string>
+    <string name="move_speed">Velocidade de Movimento</string>
+    <string name="armor">Armadura</string>
+    <string name="armor_per_level">Armadura por Nível</string>
+    <string name="spell_block">Bloqueio de Feitiço</string>
+    <string name="spell_block_per_level">Bloqueio de Feitiço por Nível</string>
+    <string name="attack_range">Alcance de Ataque</string>
+    <string name="hp_regen">Regeneração de HP</string>
+    <string name="hp_regen_per_level">Regeneração de HP por Nível</string>
+    <string name="mp_regen">Regeneração de MP</string>
+    <string name="mp_regen_per_level">Regeneração de MP por Nível</string>
+    <string name="critical_chance">Chance Crítica</string>
+    <string name="critical_chance_per_level">Chance Crítica por Nível</string>
+    <string name="attack_damage">Dano de Ataque</string>
+    <string name="attack_damage_per_level">Dano de Ataque por Nível</string>
+    <string name="attack_speed">Velocidade de Ataque</string>
+    <string name="attack_speed_per_level">Velocidade de Ataque por Nível</string>
+</resources>

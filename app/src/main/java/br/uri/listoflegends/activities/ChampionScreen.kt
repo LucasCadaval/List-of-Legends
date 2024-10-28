@@ -49,6 +49,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -70,6 +71,30 @@ fun ChampionScreen(champion: ChampionModel) {
     val context = LocalContext.current
     var mediaPlayer: MediaPlayer? = null
 
+    val statLabels = listOf(
+        stringResource(R.string.hp),
+        stringResource(R.string.hp_per_level),
+        stringResource(R.string.mp),
+        stringResource(R.string.mp_per_level),
+        stringResource(R.string.move_speed),
+        stringResource(R.string.armor),
+        stringResource(R.string.armor_per_level),
+        stringResource(R.string.spell_block),
+        stringResource(R.string.spell_block_per_level),
+        stringResource(R.string.attack_range),
+        stringResource(R.string.hp_regen),
+        stringResource(R.string.hp_regen_per_level),
+        stringResource(R.string.mp_regen),
+        stringResource(R.string.mp_regen_per_level),
+        stringResource(R.string.critical_chance),
+        stringResource(R.string.critical_chance_per_level),
+        stringResource(R.string.attack_damage),
+        stringResource(R.string.attack_damage_per_level),
+        stringResource(R.string.attack_speed),
+        stringResource(R.string.attack_speed_per_level)
+    )
+
+
     LaunchedEffect(champion.icon) {
         coroutineScope.launch(Dispatchers.IO) {
             bitmap = getImageFromUrl(champion.icon)
@@ -86,7 +111,7 @@ fun ChampionScreen(champion: ChampionModel) {
             Column(
                 modifier = Modifier.padding(16.dp)
             ) {
-                Spacer( modifier = Modifier.padding(vertical = 24.dp) )
+                Spacer(modifier = Modifier.padding(vertical = 24.dp))
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.fillMaxWidth()
@@ -101,8 +126,7 @@ fun ChampionScreen(champion: ChampionModel) {
                             Image(
                                 bitmap = it.asImageBitmap(),
                                 contentDescription = champion.name,
-                                modifier = Modifier
-                                    .fillMaxSize()
+                                modifier = Modifier.fillMaxSize()
                             )
                         }
                     }
@@ -140,11 +164,12 @@ fun ChampionScreen(champion: ChampionModel) {
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.Share,
-                                    contentDescription = "Share",
+                                    contentDescription = stringResource(R.string.share),
                                     modifier = Modifier.size(24.dp)
                                 )
                             }
 
+                            val audioNotFoundString = stringResource(R.string.audio_not_found)
                             IconButton(
                                 onClick = {
                                     val championAudioFileName = champion.name.lowercase().replace(" ", "_")
@@ -158,7 +183,7 @@ fun ChampionScreen(champion: ChampionModel) {
                                             it.release()
                                         }
                                     } else {
-                                        Toast.makeText(context, "Áudio para o campeão ${champion.name} não encontrado.", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(context, audioNotFoundString, Toast.LENGTH_SHORT).show()
                                     }
                                 },
                                 colors = IconButtonDefaults.iconButtonColors(
@@ -168,7 +193,7 @@ fun ChampionScreen(champion: ChampionModel) {
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.PlayArrow,
-                                    contentDescription = "Play Sound",
+                                    contentDescription = stringResource(R.string.play_sound),
                                     modifier = Modifier.size(24.dp)
                                 )
                             }
@@ -194,36 +219,35 @@ fun ChampionScreen(champion: ChampionModel) {
                     champion.stats?.let { stats ->
                         item {
                             Text(
-                                text = "Stats:",
+                                text = stringResource(R.string.stats),
                                 style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
                                 color = Color(gold)
                             )
                         }
 
-                        val statLabels = listOf(
-                            "HP" to stats.hp,
-                            "HP per Level" to stats.hpperlevel,
-                            "MP" to stats.mp,
-                            "MP per Level" to stats.mpperlevel,
-                            "Move Speed" to stats.movespeed,
-                            "Armor" to stats.armor,
-                            "Armor per Level" to stats.armorperlevel,
-                            "Spell Block" to stats.spellblock,
-                            "Spell Block per Level" to stats.spellblockperlevel,
-                            "Attack Range" to stats.attackrange,
-                            "HP Regen" to stats.hpregen,
-                            "HP Regen per Level" to stats.hpregenperlevel,
-                            "MP Regen" to stats.mpregen,
-                            "MP Regen per Level" to stats.mpregenperlevel,
-                            "Critical Chance" to "${stats.crit}%",
-                            "Critical Chance per Level" to "${stats.critperlevel}%",
-                            "Attack Damage" to stats.attackdamage,
-                            "Attack Damage per Level" to stats.attackdamageperlevel,
-                            "Attack Speed" to stats.attackspeed,
-                            "Attack Speed per Level" to stats.attackspeedperlevel
+                        val statValues = listOf(
+                            stats.hp,
+                            stats.hpperlevel,
+                            stats.mp,
+                            stats.mpperlevel,
+                            stats.movespeed,
+                            stats.armor,
+                            stats.armorperlevel,
+                            stats.spellblock,
+                            stats.spellblockperlevel,
+                            stats.attackrange,
+                            stats.hpregen,
+                            stats.hpregenperlevel,
+                            stats.mpregen,
+                            stats.mpregenperlevel,
+                            "${stats.crit}%",
+                            "${stats.critperlevel}%",
+                            stats.attackdamage,
+                            stats.attackdamageperlevel,
+                            stats.attackspeed,
+                            stats.attackspeedperlevel
                         )
-
-                        items(statLabels) { (label, value) ->
+                        items(statLabels.zip(statValues)) { (label, value) ->
                             Text(
                                 text = " • $label: $value",
                                 color = Color.White,
