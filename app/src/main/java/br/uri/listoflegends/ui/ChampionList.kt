@@ -21,6 +21,7 @@
     import androidx.compose.ui.layout.HorizontalAlignmentLine
     import androidx.compose.ui.platform.LocalContext
     import androidx.compose.ui.res.painterResource
+    import androidx.compose.ui.res.stringResource
     import androidx.compose.ui.text.TextStyle
     import androidx.compose.ui.unit.dp
     import br.com.uri.champions.ui.theme.BlueLol
@@ -75,7 +76,7 @@
                 ) {
                     if (searchQuery.isEmpty()) {
                         Text(
-                            text = "Pesquisar...",
+                            text = stringResource(id = R.string.search_hint),
                             color = Color.Gray,
                         )
                     }
@@ -100,11 +101,11 @@
                         .height(36.dp),
                         colors = androidx.compose.material3.ButtonDefaults.buttonColors(containerColor = BlueLol)
                 ) {
-                    Text(text = "Team Draft", color = GoldLol)
+                    Text(text = stringResource(R.string.team_draft), color = GoldLol)
                 }
 
                 if (champions == null) {
-                    Text("Loading...")
+                    Text(stringResource(id = R.string.loading), color = Color.White)
                 } else {
                     val filteredChampions = if (searchQuery.isEmpty()) {
                         champions

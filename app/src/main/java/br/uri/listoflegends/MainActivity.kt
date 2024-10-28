@@ -2,6 +2,7 @@ package br.uri.listoflegends
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -20,6 +21,11 @@ import br.uri.listoflegends.ui.SplashScreen
 import br.uri.listoflegends.ui.TopBar
 import br.uri.listoflegends.ui.ChampionDraft
 import br.uri.listoflegends.utils.Screen
+import android.content.res.Configuration
+import android.util.Log
+import androidx.activity.compose.setContent
+import br.com.uri.champions.ui.theme.ListofLegendsTheme
+import java.util.Locale
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 class MainActivity : ComponentActivity() {
@@ -28,6 +34,13 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val context = this
+        val locale = Locale.getDefault()
+        val languageCode = locale.language
+        val countryCode = locale.country
+        setLocale(languageCode, countryCode)
+        setLocale("en", "US")
+        Log.d("TAG", "Locale: $locale")
+
 
         with(NotificationManagerCompat.from(this)) {
             if (ActivityCompat.checkSelfPermission(
@@ -77,5 +90,12 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+    private fun setLocale(languageCode: String, countryCode: String) {
+        val locale = Locale(languageCode, countryCode)
+        Locale.setDefault(locale)
+        val config = Configuration()
+        config.setLocale(locale)
+        resources.updateConfiguration(config, resources.displayMetrics)
     }
 }
