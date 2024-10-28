@@ -28,4 +28,7 @@
     <string name="attack_damage_per_level">Attack Damage per Level</string>
     <string name="attack_speed">Attack Speed</string>
     <string name="attack_speed_per_level">Attack Speed per Level</string>
+    <string name="sort_teams">Randomize Teams</string>
+    <string name="blue_team">Blue Team</string>
+    <string name="red_team">Red Team</string>
 </resources>

@@ -38,7 +38,7 @@ class MainActivity : ComponentActivity() {
         val languageCode = locale.language
         val countryCode = locale.country
         setLocale(languageCode, countryCode)
-//        setLocale("pt")
+        setLocale("en", "US")
         Log.d("TAG", "Locale: $locale")
 
 

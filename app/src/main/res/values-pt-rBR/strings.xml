@@ -27,4 +27,7 @@
     <string name="attack_damage_per_level">Dano de Ataque por Nível</string>
     <string name="attack_speed">Velocidade de Ataque</string>
     <string name="attack_speed_per_level">Velocidade de Ataque por Nível</string>
+    <string name="sort_teams">Sortear Times</string>
+    <string name="blue_team">Time Azul</string>
+    <string name="red_team">Time Vermelho</string>
 </resources>

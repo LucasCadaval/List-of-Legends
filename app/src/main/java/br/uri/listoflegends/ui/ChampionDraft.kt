@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -75,7 +76,7 @@ fun ChampionDraft() {
             verticalArrangement = Arrangement.Center
         ) {
             if (champions == null) {
-                Text("Loading champions...")
+                Text(stringResource(id = R.string.loading), color = GoldLol)
             } else {
                 Button(onClick = {
                     val shuffledChampions = champions!!.shuffled()
@@ -89,7 +90,7 @@ fun ChampionDraft() {
                         .border(2.dp, GoldLol, shape = RoundedCornerShape(16.dp))
                         .height(36.dp),
                     colors = androidx.compose.material3.ButtonDefaults.buttonColors(containerColor = BlueLol)) {
-                    Text("Sortear Times", color = GoldLol)
+                    Text(stringResource(id = R.string.sort_teams), color = GoldLol)
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -122,7 +123,7 @@ fun ChampionDraft() {
 fun OutlinedTextBlue() {
     Box {
         Text(
-            text = "Time Azul",
+            text = stringResource(id = R.string.blue_team),
             style = TextStyle(
                 color = GoldLol,
                 fontSize = 40.sp,
@@ -131,7 +132,7 @@ fun OutlinedTextBlue() {
             modifier = Modifier.offset(1.dp, 1.dp)
         )
         Text(
-            text = "Time Azul",
+            text = stringResource(id = R.string.blue_team),
             style = TextStyle(
                 color = GoldLol,
                 fontSize = 40.sp,
@@ -140,7 +141,7 @@ fun OutlinedTextBlue() {
             modifier = Modifier.offset(-1.dp, 1.dp)
         )
         Text(
-            text = "Time Azul",
+            text = stringResource(id = R.string.blue_team),
             style = TextStyle(
                 color = GoldLol,
                 fontSize = 40.sp,
@@ -149,7 +150,7 @@ fun OutlinedTextBlue() {
             modifier = Modifier.offset(1.dp, -1.dp)
         )
         Text(
-            text = "Time Azul",
+            text = stringResource(id = R.string.blue_team),
             style = TextStyle(
                 color = GoldLol,
                 fontSize = 40.sp,
@@ -158,7 +159,7 @@ fun OutlinedTextBlue() {
             modifier = Modifier.offset(-1.dp, -1.dp)
         )
         Text(
-            text = "Time Azul",
+            text = stringResource(id = R.string.blue_team),
             style = TextStyle(
                 color = Color.Blue,
                 fontSize = 40.sp,
@@ -172,7 +173,7 @@ fun OutlinedTextBlue() {
 fun OutlinedTextRed() {
     Box {
         Text(
-            text = "Time Vermelho",
+            text = stringResource(id = R.string.red_team),
             style = TextStyle(
                 color = GoldLol,
                 fontSize = 40.sp,
@@ -181,7 +182,7 @@ fun OutlinedTextRed() {
             modifier = Modifier.offset(1.dp, 1.dp)
         )
         Text(
-            text = "Time Vermelho",
+            text = stringResource(id = R.string.red_team),
             style = TextStyle(
                 color = GoldLol,
                 fontSize = 40.sp,
@@ -190,7 +191,7 @@ fun OutlinedTextRed() {
             modifier = Modifier.offset(-1.dp, 1.dp)
         )
         Text(
-            text = "Time Vermelho",
+            text = stringResource(id = R.string.red_team),
             style = TextStyle(
                 color = GoldLol,
                 fontSize = 40.sp,
@@ -199,7 +200,7 @@ fun OutlinedTextRed() {
             modifier = Modifier.offset(1.dp, -1.dp)
         )
         Text(
-            text = "Time Vermelho",
+            text = stringResource(id = R.string.red_team),
             style = TextStyle(
                 color = GoldLol,
                 fontSize = 40.sp,
@@ -208,7 +209,7 @@ fun OutlinedTextRed() {
             modifier = Modifier.offset(-1.dp, -1.dp)
         )
         Text(
-            text = "Time Vermelho",
+            text = stringResource(id = R.string.red_team),
             style = TextStyle(
                 color = Color.Red,
                 fontSize = 40.sp,
