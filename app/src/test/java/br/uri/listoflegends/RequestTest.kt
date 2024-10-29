@@ -1,4 +1,4 @@
-package br.uri.listoflegends.services.tests
+package br.uri.listoflegends
 
 import br.uri.listoflegends.models.ChampionModel
 import br.uri.listoflegends.models.Sprite
