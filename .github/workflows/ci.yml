@@ -33,6 +33,9 @@ jobs:
         api-level: ${{ env.ANDROID_COMPILE_SDK }}
         build-tools: ${{ env.ANDROID_BUILD_TOOLS }}
         cache: gradle
+    
+    - name: Grant execution permission for gradlew
+      run: chmod +x ./gradlew
 
     - name: Build app
       run: ./gradlew assembleDebug
