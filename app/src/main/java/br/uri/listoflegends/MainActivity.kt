@@ -40,7 +40,7 @@ class MainActivity : ComponentActivity() {
         val languageCode = locale.language
         val countryCode = locale.country
         setLocale(languageCode, countryCode)
-        setLocale("pt", "BR")
+//        setLocale("pt", "BR")
 //         SharedPreferencesManager.clearChampions(context)
 //         SharedPreferencesManager.clearPageIndex(context)
 

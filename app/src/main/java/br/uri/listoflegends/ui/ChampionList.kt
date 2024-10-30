@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -155,9 +156,13 @@ fun ChampionList(onTeamDraftClick: () -> Unit, onChampionClick: (ChampionModel) 
                                 },
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(16.dp)
+                                    .padding(horizontal = 16.dp)
+                                    .align(Alignment.CenterHorizontally)
+                                    .border(2.dp, GoldLol, shape = RoundedCornerShape(16.dp))
+                                    .height(36.dp),
+                                colors = androidx.compose.material3.ButtonDefaults.buttonColors(containerColor = BlueLol)
                             ) {
-                                Text(text = "Carregar mais", color = GoldLol)
+                                Text(text = stringResource(R.string.load_more), color = GoldLol)
                             }
                         }
                     }
