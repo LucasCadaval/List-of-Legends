@@ -14,10 +14,15 @@ import kotlinx.coroutines.withContext
 import java.net.HttpURLConnection
 import java.net.URL
 
-fun fetchChampions(context: Context, callback: (Int, List<ChampionModel>?) -> Unit) {
+
+fun fetchChampionsPage(
+    context: Context,
+    page: Int,
+    callback: (Int, List<ChampionModel>?) -> Unit
+) {
     CoroutineScope(Dispatchers.IO).launch {
         try {
-            val url = URL("http://girardon.com.br:3001/champions")
+            val url = URL("http://girardon.com.br:3001/champions?page=$page")
             val connection = url.openConnection() as HttpURLConnection
             connection.requestMethod = "GET"
             val responseCode = connection.responseCode
@@ -26,7 +31,7 @@ fun fetchChampions(context: Context, callback: (Int, List<ChampionModel>?) -> Un
 
             SharedPreferencesManager.saveChampions(context, response)
 
-            Log.d("NetworkResponse", "Code: $responseCode, JSON: $response")
+            Log.d("NetworkResponse", "Page: $page, Code: $responseCode, JSON: $response")
 
             val champions = parseChampionsFromJson(response)
 
@@ -37,6 +42,7 @@ fun fetchChampions(context: Context, callback: (Int, List<ChampionModel>?) -> Un
         }
     }
 }
+
 
 suspend fun getImageFromUrl(url: String?): Bitmap? {
     return withContext(Dispatchers.IO) {

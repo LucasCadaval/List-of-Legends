@@ -3,6 +3,7 @@ package br.uri.listoflegends
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -25,6 +26,7 @@ import android.content.res.Configuration
 import android.util.Log
 import androidx.activity.compose.setContent
 import br.com.uri.champions.ui.theme.ListofLegendsTheme
+import br.uri.listoflegends.services.SharedPreferencesManager
 import java.util.Locale
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -38,8 +40,9 @@ class MainActivity : ComponentActivity() {
         val languageCode = locale.language
         val countryCode = locale.country
         setLocale(languageCode, countryCode)
-        setLocale("en", "US")
+        //setLocale("pt", "BR")
         Log.d("TAG", "Locale: $locale")
+//        SharedPreferencesManager.clearChampions(context)
 
 
         with(NotificationManagerCompat.from(this)) {
@@ -79,7 +82,7 @@ class MainActivity : ComponentActivity() {
                             onChampionClick = { champion ->
                                 currentScreen = Screen.ChampionDetail(champion)
                             },
-                            onTeamDraftCLick = { currentScreen = Screen.ChampionDraft}
+                            onTeamDraftClick = { currentScreen = Screen.ChampionDraft}
                         )
                         is Screen.ChampionDetail -> {
                             val champion = (currentScreen as Screen.ChampionDetail).champion

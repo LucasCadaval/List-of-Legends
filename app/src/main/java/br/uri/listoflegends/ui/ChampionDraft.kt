@@ -23,6 +23,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.com.uri.champions.ui.theme.BlueLol
@@ -30,28 +32,24 @@ import br.com.uri.champions.ui.theme.GoldLol
 import br.uri.listoflegends.R
 import br.uri.listoflegends.models.ChampionModel
 import br.uri.listoflegends.services.SharedPreferencesManager
-import br.uri.listoflegends.services.fetchChampions
+import br.uri.listoflegends.services.fetchChampionsPage
 import br.uri.listoflegends.utils.parseChampionsFromJson
 
 @Composable
 fun ChampionDraft() {
     var responseCode by remember { mutableStateOf(-1) }
-
     var blueTeam by remember { mutableStateOf<List<ChampionModel>>(emptyList()) }
     var redTeam by remember { mutableStateOf<List<ChampionModel>>(emptyList()) }
 
     val context = LocalContext.current
-//    SharedPreferencesManager.clearChampions(context)
     val championsFromPreference = SharedPreferencesManager.getChampions(context)
-    val parsedChampions = championsFromPreference?.let {
-        parseChampionsFromJson(it)
-    }
+    val parsedChampions = championsFromPreference?.let { parseChampionsFromJson(it) }
 
     var champions by remember { mutableStateOf<List<ChampionModel>?>(parsedChampions) }
 
     if (parsedChampions == null) {
         LaunchedEffect(Unit) {
-            fetchChampions(context) { code, response ->
+            fetchChampionsPage(context, 1) { code, response ->
                 responseCode = code
                 champions = response
             }
@@ -63,9 +61,7 @@ fun ChampionDraft() {
             painter = painterResource(id = R.drawable.rift),
             contentDescription = null,
             contentScale = ContentScale.FillBounds,
-            modifier = Modifier
-                .fillMaxSize()
-                .background(BlueLol)
+            modifier = Modifier.fillMaxSize().background(BlueLol)
         )
 
         Column(
@@ -78,40 +74,48 @@ fun ChampionDraft() {
             if (champions == null) {
                 Text(stringResource(id = R.string.loading), color = GoldLol)
             } else {
-                Button(onClick = {
-                    val shuffledChampions = champions!!.shuffled()
-                    blueTeam = shuffledChampions.take(5)
-                    redTeam = shuffledChampions.drop(5).take(5)
-                },
+                Button(
+                    onClick = {
+                        val shuffledChampions = champions!!.shuffled()
+                        blueTeam = shuffledChampions.take(5)
+                        redTeam = shuffledChampions.drop(5).take(5)
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)
                         .align(Alignment.CenterHorizontally)
                         .border(2.dp, GoldLol, shape = RoundedCornerShape(16.dp))
                         .height(36.dp),
-                    colors = androidx.compose.material3.ButtonDefaults.buttonColors(containerColor = BlueLol)) {
+                    colors = androidx.compose.material3.ButtonDefaults.buttonColors(containerColor = BlueLol)
+                ) {
                     Text(stringResource(id = R.string.sort_teams), color = GoldLol)
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                OutlinedTextBlue()
+                OutlinedText(
+                    text = stringResource(id = R.string.blue_team),
+                    textColor = Color.Blue
+                )
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(3),
                 ) {
                     items(blueTeam) { champion ->
-                        ChampionCard(champion, { null })
+                        ChampionCard(champion = champion, onChampionClick = {})
                     }
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                OutlinedTextRed()
+                OutlinedText(
+                    text = stringResource(id = R.string.red_team),
+                    textColor = Color.Red
+                )
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(3),
                 ) {
                     items(redTeam) { champion ->
-                        ChampionCard(champion, { null })
+                        ChampionCard(champion = champion, onChampionClick = {})
                     }
                 }
             }
@@ -120,101 +124,17 @@ fun ChampionDraft() {
 }
 
 @Composable
-fun OutlinedTextBlue() {
-    Box {
-        Text(
-            text = stringResource(id = R.string.blue_team),
-            style = TextStyle(
-                color = GoldLol,
-                fontSize = 40.sp,
-                fontWeight = FontWeight.Bold
-            ),
-            modifier = Modifier.offset(1.dp, 1.dp)
-        )
-        Text(
-            text = stringResource(id = R.string.blue_team),
-            style = TextStyle(
-                color = GoldLol,
-                fontSize = 40.sp,
-                fontWeight = FontWeight.Bold
-            ),
-            modifier = Modifier.offset(-1.dp, 1.dp)
-        )
-        Text(
-            text = stringResource(id = R.string.blue_team),
-            style = TextStyle(
-                color = GoldLol,
-                fontSize = 40.sp,
-                fontWeight = FontWeight.Bold
-            ),
-            modifier = Modifier.offset(1.dp, -1.dp)
-        )
-        Text(
-            text = stringResource(id = R.string.blue_team),
-            style = TextStyle(
-                color = GoldLol,
-                fontSize = 40.sp,
-                fontWeight = FontWeight.Bold
-            ),
-            modifier = Modifier.offset(-1.dp, -1.dp)
-        )
-        Text(
-            text = stringResource(id = R.string.blue_team),
-            style = TextStyle(
-                color = Color.Blue,
-                fontSize = 40.sp,
-                fontWeight = FontWeight.Bold
-            )
-        )
-    }
-}
-
-@Composable
-fun OutlinedTextRed() {
-    Box {
-        Text(
-            text = stringResource(id = R.string.red_team),
-            style = TextStyle(
-                color = GoldLol,
-                fontSize = 40.sp,
-                fontWeight = FontWeight.Bold
-            ),
-            modifier = Modifier.offset(1.dp, 1.dp)
-        )
-        Text(
-            text = stringResource(id = R.string.red_team),
-            style = TextStyle(
-                color = GoldLol,
-                fontSize = 40.sp,
-                fontWeight = FontWeight.Bold
-            ),
-            modifier = Modifier.offset(-1.dp, 1.dp)
-        )
-        Text(
-            text = stringResource(id = R.string.red_team),
-            style = TextStyle(
-                color = GoldLol,
-                fontSize = 40.sp,
-                fontWeight = FontWeight.Bold
-            ),
-            modifier = Modifier.offset(1.dp, -1.dp)
-        )
-        Text(
-            text = stringResource(id = R.string.red_team),
-            style = TextStyle(
-                color = GoldLol,
-                fontSize = 40.sp,
-                fontWeight = FontWeight.Bold
-            ),
-            modifier = Modifier.offset(-1.dp, -1.dp)
-        )
-        Text(
-            text = stringResource(id = R.string.red_team),
-            style = TextStyle(
-                color = Color.Red,
-                fontSize = 40.sp,
-                fontWeight = FontWeight.Bold
-            )
-        )
-    }
+fun OutlinedText(text: String, textColor: Color) {
+    Text(
+        text = text,
+        style = TextStyle(
+            color = textColor,
+            fontSize = 40.sp,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center
+        ),
+        modifier = Modifier.fillMaxWidth(),
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis
+    )
 }
