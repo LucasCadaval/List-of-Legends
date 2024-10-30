@@ -41,8 +41,8 @@ class MainActivity : ComponentActivity() {
         val countryCode = locale.country
         setLocale(languageCode, countryCode)
         //setLocale("pt", "BR")
-        Log.d("TAG", "Locale: $locale")
-//        SharedPreferencesManager.clearChampions(context)
+        // SharedPreferencesManager.clearChampions(context)
+        // SharedPreferencesManager.clearPageIndex(context)
 
 
         with(NotificationManagerCompat.from(this)) {

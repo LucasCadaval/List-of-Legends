@@ -33,6 +33,7 @@ import br.uri.listoflegends.models.ChampionModel
 import br.uri.listoflegends.services.SharedPreferencesManager
 import br.uri.listoflegends.services.fetchChampionsPage
 import br.uri.listoflegends.utils.parseChampionsFromJson
+import br.uri.listoflegends.utils.parseChampionsToJson
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @Composable
@@ -52,16 +53,16 @@ fun ChampionList(onTeamDraftClick: () -> Unit, onChampionClick: (ChampionModel) 
 
     if (parsedChampions == null) {
         LaunchedEffect(Unit) {
-            fetchChampionsPage(context, pageIndex) { code, response ->
+            fetchChampionsPage(context, pageIndex, null) { code, response ->
                 responseCode = code
                 champions = response
-                displayedChampions = response?.take(20) ?: listOf()
+                displayedChampions = response?: listOf()
                 hasMoreChampions = response?.isNotEmpty() == true
             }
         }
     } else {
         if (displayedChampions.isEmpty()) {
-            displayedChampions = parsedChampions.take(20)
+            displayedChampions = parsedChampions
         }
     }
 
@@ -139,11 +140,11 @@ fun ChampionList(onTeamDraftClick: () -> Unit, onChampionClick: (ChampionModel) 
                             Button(
                                 onClick = {
                                     pageIndex++
-                                    fetchChampionsPage(context, pageIndex) { code, response ->
+                                    fetchChampionsPage(context, pageIndex, displayedChampions) { code, response ->
                                         responseCode = code
                                         response?.let {
                                             if (it.isNotEmpty()) {
-                                                displayedChampions = displayedChampions + it.take(20)
+                                                displayedChampions = displayedChampions + it
                                                 SharedPreferencesManager.savePageIndex(context, pageIndex)
                                             } else {
                                                 SharedPreferencesManager.savePageIndex(context, pageIndex)

@@ -1,9 +1,10 @@
 package br.uri.listoflegends.utils
 
 import br.uri.listoflegends.models.ChampionModel
+import org.json.JSONArray
+import org.json.JSONObject
 import br.uri.listoflegends.models.Sprite
 import br.uri.listoflegends.models.Stats
-import org.json.JSONArray
 import java.util.Vector
 
 fun parseChampionsFromJson(jsonResponse: String): List<ChampionModel> {
@@ -80,4 +81,65 @@ fun parseChampionsFromJson(jsonResponse: String): List<ChampionModel> {
     }
 
     return championsList
+}
+
+
+fun parseChampionsToJson(champions: List<ChampionModel>): String {
+    val jsonArray = JSONArray()
+
+    for (champion in champions) {
+        val jsonObject = JSONObject()
+
+        jsonObject.put("id", champion.id)
+        jsonObject.put("key", champion.key)
+        jsonObject.put("name", champion.name)
+        jsonObject.put("title", champion.title)
+
+        val tagsArray = JSONArray()
+        champion.tags?.forEach { tag ->
+            tagsArray.put(tag)
+        }
+        jsonObject.put("tags", tagsArray)
+
+        champion.stats?.let {
+            val statsObject = JSONObject()
+            statsObject.put("hp", it.hp)
+            statsObject.put("hpperlevel", it.hpperlevel)
+            statsObject.put("mp", it.mp)
+            statsObject.put("mpperlevel", it.mpperlevel)
+            statsObject.put("movespeed", it.movespeed)
+            statsObject.put("armor", it.armor)
+            statsObject.put("armorperlevel", it.armorperlevel)
+            statsObject.put("spellblock", it.spellblock)
+            statsObject.put("spellblockperlevel", it.spellblockperlevel)
+            statsObject.put("attackrange", it.attackrange)
+            statsObject.put("hpregen", it.hpregen)
+            statsObject.put("hpregenperlevel", it.hpregenperlevel)
+            statsObject.put("mpregen", it.mpregen)
+            statsObject.put("mpregenperlevel", it.mpregenperlevel)
+            statsObject.put("crit", it.crit)
+            statsObject.put("critperlevel", it.critperlevel)
+            statsObject.put("attackdamage", it.attackdamage)
+            statsObject.put("attackdamageperlevel", it.attackdamageperlevel)
+            statsObject.put("attackspeed", it.attackspeed)
+            statsObject.put("attackspeedperlevel", it.attackspeedperlevel)
+            jsonObject.put("stats", statsObject)
+        }
+
+        jsonObject.put("icon", champion.icon)
+
+        champion.sprite?.let {
+            val spriteObject = JSONObject()
+            spriteObject.put("url", it.url)
+            spriteObject.put("x", it.x)
+            spriteObject.put("y", it.y)
+            jsonObject.put("sprite", spriteObject)
+        }
+
+        jsonObject.put("description", champion.description)
+
+        jsonArray.put(jsonObject)
+    }
+
+    return jsonArray.toString()
 }

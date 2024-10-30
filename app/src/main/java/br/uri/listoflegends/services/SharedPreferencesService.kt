@@ -19,7 +19,7 @@ object SharedPreferencesManager {
 
     fun getPageIndex(context: Context): Int {
         val sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-        return sharedPreferences.getInt(PAGE_INDEX, 1) // Default to 1 if not found
+        return sharedPreferences.getInt(PAGE_INDEX, 1)
     }
 
     fun saveChampions(context: Context, champions: String) {
@@ -39,6 +39,14 @@ object SharedPreferencesManager {
         val sharedPreferences: SharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         with(sharedPreferences.edit()) {
             remove(CHAMPIONS)
+            apply()
+        }
+    }
+
+    fun clearPageIndex(context: Context) {
+        val sharedPreferences: SharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        with(sharedPreferences.edit()) {
+            remove(PAGE_INDEX)
             apply()
         }
     }

@@ -49,7 +49,7 @@ fun ChampionDraft() {
 
     if (parsedChampions == null) {
         LaunchedEffect(Unit) {
-            fetchChampionsPage(context, 1) { code, response ->
+            fetchChampionsPage(context, 1, null) { code, response ->
                 responseCode = code
                 champions = response
             }
