@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.compose.ui.platform.LocalContext
 import br.uri.listoflegends.models.ChampionModel
 import br.uri.listoflegends.utils.parseChampionsFromJson
+import br.uri.listoflegends.utils.parseChampionsToJson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -14,29 +15,47 @@ import kotlinx.coroutines.withContext
 import java.net.HttpURLConnection
 import java.net.URL
 
-fun fetchChampions(context: Context, callback: (Int, List<ChampionModel>?) -> Unit) {
+
+fun fetchChampionsPage(
+    context: Context,
+    page: Int,
+    champions: List<ChampionModel>?,
+    callback: (Int, List<ChampionModel>?) -> Unit
+) {
     CoroutineScope(Dispatchers.IO).launch {
         try {
-            val url = URL("http://girardon.com.br:3001/champions")
+            val url = URL("http://girardon.com.br:3001/champions?page=$page")
             val connection = url.openConnection() as HttpURLConnection
             connection.requestMethod = "GET"
             val responseCode = connection.responseCode
 
             val response = connection.inputStream.bufferedReader().use { it.readText() }
 
-            SharedPreferencesManager.saveChampions(context, response)
+            val newChampions = parseChampionsFromJson(response)
 
-            Log.d("NetworkResponse", "Code: $responseCode, JSON: $response")
+            Log.d("TAG", "fetchChampionsPage: Page: $page, Code: $responseCode, JSON: $response, newChampions: $newChampions")
 
-            val champions = parseChampionsFromJson(response)
+            val allChampions = if (champions != null) {
+                val updatedChampions = champions + newChampions
+                Log.d("TAG", "allChampions: ${updatedChampions.size}")
+                parseChampionsToJson(updatedChampions)
+            } else {
+                parseChampionsToJson(newChampions)
+            }
 
-            callback(responseCode, champions)
+
+            SharedPreferencesManager.saveChampions(context, allChampions)
+
+            Log.d("NetworkResponse", "Page: $page, Code: $responseCode, JSON: $response")
+
+            callback(responseCode, newChampions)
         } catch (e: Exception) {
             Log.e("NetworkError", "Erro", e)
             callback(-1, null)
         }
     }
 }
+
 
 suspend fun getImageFromUrl(url: String?): Bitmap? {
     return withContext(Dispatchers.IO) {
