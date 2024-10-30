@@ -12,7 +12,6 @@ fun parseItemsFromJson(json: String): List<ItemModel> {
     for (i in 0 until jsonArray.length()) {
         val jsonObject = jsonArray.getJSONObject(i)
 
-        // Extrai os dados de preço
         val priceObject = jsonObject.getJSONObject("price")
         val price = Price(
             base = priceObject.getInt("base"),
@@ -20,7 +19,6 @@ fun parseItemsFromJson(json: String): List<ItemModel> {
             sell = priceObject.getInt("sell")
         )
 
-        // Cria um ItemModel
         val item = ItemModel(
             name = jsonObject.getString("name"),
             description = jsonObject.getString("description"),

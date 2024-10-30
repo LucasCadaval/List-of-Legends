@@ -58,20 +58,16 @@ fun ChampionDraft() {
 
     val context = LocalContext.current
 
-    // Carrega campeões salvos
     val championsFromPreference = SharedPreferencesManager.getChampions(context)
     val parsedChampions = championsFromPreference?.let { parseChampionsFromJson(it) }
     var champions by remember { mutableStateOf<List<ChampionModel>?>(parsedChampions) }
 
-    // Carregar itens de SharedPreferences ou da API
     LaunchedEffect(Unit) {
         val itemsFromPreference = SharedPreferencesManager.getItems(context)
 
         if (itemsFromPreference == null) {
-            // Chama a função fetchItems se os itens não estão em SharedPreferences
             fetchItems(context) { code, apiItems ->
                 if (code == 200 && apiItems != null) {
-                    // Converte a lista de itens para JSON e salva em SharedPreferences
                     val itemsJson = parseItemsToJson(apiItems)
                     SharedPreferencesManager.saveItems(context, itemsJson)
                     items = apiItems // Atualiza a lista de itens para exibição
@@ -81,12 +77,10 @@ fun ChampionDraft() {
                 }
             }
         } else {
-            // Carrega itens existentes em SharedPreferences
             items = parseItemsFromJson(itemsFromPreference)
             Log.d("ChampionDraft", "Itens carregados de SharedPreferences: ${items.size}")
         }
 
-        // Carrega campeões se não estiverem salvos
         if (parsedChampions == null) {
             fetchChampionsPage(context, 1, null) { code, response ->
                 responseCode = code
@@ -142,7 +136,7 @@ fun ChampionDraft() {
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .heightIn(max = 300.dp), // Define a altura máxima para a coluna do time azul
+                        .heightIn(max = 300.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     items(blueTeam) { champion ->
@@ -160,7 +154,7 @@ fun ChampionDraft() {
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .heightIn(max = 300.dp), // Define a altura máxima para a coluna do time vermelho
+                        .heightIn(max = 300.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     items(redTeam) { champion ->
@@ -207,8 +201,8 @@ fun RandomCard(champion: ChampionModel, items: List<ItemModel>) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .background(BlueLol, shape = RoundedCornerShape(8.dp)) // Fundo do card em BlueLol
-            .border(2.dp, GoldLol, shape = RoundedCornerShape(8.dp)) // Contorno do card em GoldLol
+            .background(BlueLol, shape = RoundedCornerShape(8.dp))
+            .border(2.dp, GoldLol, shape = RoundedCornerShape(8.dp))
             .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -244,7 +238,7 @@ fun RandomCard(champion: ChampionModel, items: List<ItemModel>) {
                 text = champion.name,
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,
-                color = GoldLol, // Cor do nome do campeão em GoldLol
+                color = GoldLol,
                 textAlign = TextAlign.Start
             )
 

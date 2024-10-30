@@ -23,12 +23,10 @@ fun fetchItems(
 
             val response = connection.inputStream.bufferedReader().use { it.readText() }
 
-            // Parse do JSON de resposta para uma lista de ItemModel
             val items = parseItemsFromJson(response)
 
             Log.d("NetworkResponse", "Items Response Code: $responseCode, Items JSON: $response")
 
-            // Callback com a lista de itens
             callback(responseCode, items)
         } catch (e: Exception) {
             Log.e("NetworkError", "Erro ao buscar itens", e)

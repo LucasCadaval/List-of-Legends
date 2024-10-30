@@ -12,7 +12,6 @@ fun parseItemsToJson(items: List<ItemModel>): String {
             put("name", item.name)
             put("description", item.description)
 
-            // Converte o objeto Price para JSON
             val priceObject = JSONObject().apply {
                 put("base", item.price.base)
                 put("total", item.price.total)
