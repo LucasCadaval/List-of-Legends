@@ -30,4 +30,5 @@
     <string name="sort_teams">Sortear Times</string>
     <string name="blue_team">Time Azul</string>
     <string name="red_team">Time Vermelho</string>
+    <string name="load_more">Carregar Mais</string>
 </resources>
