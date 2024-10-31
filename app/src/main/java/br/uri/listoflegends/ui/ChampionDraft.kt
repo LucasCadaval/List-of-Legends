@@ -52,8 +52,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun ChampionDraft() {
     var responseCode by remember { mutableStateOf(-1) }
-    var blueTeam by remember { mutableStateOf<List<ChampionModel>>(emptyList()) }
-    var redTeam by remember { mutableStateOf<List<ChampionModel>>(emptyList()) }
+    var blueTeam by remember { mutableStateOf<List<Pair<ChampionModel, Int>>>(emptyList()) }
+    var redTeam by remember { mutableStateOf<List<Pair<ChampionModel, Int>>>(emptyList()) }
     var items by remember { mutableStateOf<List<ItemModel>>(emptyList()) }
 
     val context = LocalContext.current
@@ -61,6 +61,14 @@ fun ChampionDraft() {
     val championsFromPreference = SharedPreferencesManager.getChampions(context)
     val parsedChampions = championsFromPreference?.let { parseChampionsFromJson(it) }
     var champions by remember { mutableStateOf<List<ChampionModel>?>(parsedChampions) }
+
+    val positionIcons = listOf(
+        R.drawable.position_challenger_mid,
+        R.drawable.position_challenger_top,
+        R.drawable.position_challenger_bot,
+        R.drawable.position_challenger_support,
+        R.drawable.position_challenger_jungle
+    )
 
     LaunchedEffect(Unit) {
         val itemsFromPreference = SharedPreferencesManager.getItems(context)
@@ -70,7 +78,7 @@ fun ChampionDraft() {
                 if (code == 200 && apiItems != null) {
                     val itemsJson = parseItemsToJson(apiItems)
                     SharedPreferencesManager.saveItems(context, itemsJson)
-                    items = apiItems // Atualiza a lista de itens para exibição
+                    items = apiItems
                     Log.d("ChampionDraft", "Itens carregados da API e salvos: ${items.size}")
                 } else {
                     Log.e("ChampionDraft", "Falha ao carregar itens da API")
@@ -113,7 +121,9 @@ fun ChampionDraft() {
                     onClick = {
                         val shuffledChampions = champions!!.shuffled()
                         blueTeam = shuffledChampions.take(5)
+                            .zip(positionIcons.shuffled())
                         redTeam = shuffledChampions.drop(5).take(5)
+                            .zip(positionIcons.shuffled())
                         Log.d("ChampionDraft", "Times sorteados. Itens disponíveis: ${items.size}")
                     },
                     modifier = Modifier
@@ -139,9 +149,9 @@ fun ChampionDraft() {
                         .heightIn(max = 300.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
-                    items(blueTeam) { champion ->
+                    items(blueTeam) { (champion, positionIcon) ->
                         val randomItems = items.shuffled().take(6)
-                        RandomCard(champion = champion, items = randomItems)
+                        RandomCard(champion = champion, items = randomItems, positionIcon = positionIcon)
                     }
                 }
 
@@ -157,9 +167,9 @@ fun ChampionDraft() {
                         .heightIn(max = 300.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
-                    items(redTeam) { champion ->
+                    items(redTeam) { (champion, positionIcon) ->
                         val randomItems = items.shuffled().take(6)
-                        RandomCard(champion = champion, items = randomItems)
+                        RandomCard(champion = champion, items = randomItems, positionIcon = positionIcon)
                     }
                 }
             }
@@ -187,7 +197,7 @@ fun OutlinedText(text: String, textColor: Color) {
 }
 
 @Composable
-fun RandomCard(champion: ChampionModel, items: List<ItemModel>) {
+fun RandomCard(champion: ChampionModel, items: List<ItemModel>, positionIcon: Int) {
     val coroutineScope = rememberCoroutineScope()
     var bitmap by remember { mutableStateOf<Bitmap?>(null) }
 
@@ -234,13 +244,21 @@ fun RandomCard(champion: ChampionModel, items: List<ItemModel>) {
         Column(
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(
-                text = champion.name,
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp,
-                color = GoldLol,
-                textAlign = TextAlign.Start
-            )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = champion.name,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp,
+                    color = GoldLol,
+                    textAlign = TextAlign.Start
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Image(
+                    painter = painterResource(id = positionIcon),
+                    contentDescription = "Posição",
+                    modifier = Modifier.size(24.dp)
+                )
+            }
 
             Spacer(modifier = Modifier.height(8.dp))
 
