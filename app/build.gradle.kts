@@ -86,6 +86,12 @@ dependencies {
     debugImplementation("org.robolectric:robolectric:4.13")
     debugImplementation("org.mockito:mockito-core:3.11.2")
 
+    testImplementation("androidx.test:core:1.4.0")
+
+    testImplementation("org.mockito:mockito-inline:2.13.0")
+    debugImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
+
+
     androidTestImplementation ("androidx.test.espresso:espresso-core:3.5.1")
 
     implementation(libs.androidx.core.ktx)

@@ -8,7 +8,10 @@ import br.uri.listoflegends.models.ItemModel
 import br.uri.listoflegends.utils.parseItemsFromJson
 import br.uri.listoflegends.utils.parseItemsToJson
 
-object SharedPreferencesManager {
+interface SharedPreferencesServiceInterface{
+
+}
+object SharedPreferencesManager: SharedPreferencesServiceInterface {
     private const val PREF_NAME = "CHAMPION_PREF"
     private const val CHAMPIONS = "CHAMPIONS"
     private const val ITEMS = "ITEMS"  // Adiciona a chave para itens

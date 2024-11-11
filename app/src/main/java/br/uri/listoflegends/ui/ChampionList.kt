@@ -16,6 +16,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,6 +28,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import br.com.uri.champions.ui.theme.BlueLol
 import br.com.uri.champions.ui.theme.GoldLol
 import br.uri.listoflegends.R
@@ -35,46 +37,31 @@ import br.uri.listoflegends.services.SharedPreferencesManager
 import br.uri.listoflegends.services.fetchChampionsPage
 import br.uri.listoflegends.utils.parseChampionsFromJson
 import br.uri.listoflegends.utils.parseChampionsToJson
+import br.uri.listoflegends.viewModels.ChampionListViewModel
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @Composable
 fun ChampionList(onTeamDraftClick: () -> Unit, onChampionClick: (ChampionModel) -> Unit) {
-    var searchQuery by remember { mutableStateOf("") }
-    var responseCode by remember { mutableStateOf(-1) }
+    val viewModel: ChampionListViewModel = viewModel()
     val context = LocalContext.current
-    val championsFromPreference = SharedPreferencesManager.getChampions(context)
-    val parsedChampions = championsFromPreference?.let {
-        parseChampionsFromJson(it)
-    }
 
-    var champions by remember { mutableStateOf<List<ChampionModel>?>(parsedChampions) }
-    var displayedChampions by remember { mutableStateOf<List<ChampionModel>>(listOf()) }
-    var pageIndex by remember { mutableStateOf(SharedPreferencesManager.getPageIndex(context)) }
-    var hasMoreChampions by remember { mutableStateOf(true) }
+    var searchQuery by remember { mutableStateOf("") }
+    val champions by viewModel.champions.observeAsState()
+    val displayedChampions by viewModel.displayedChampions.observeAsState(listOf())
+    val hasMoreChampions by viewModel.hasMoreChampions.observeAsState(true)
+    val responseCode by viewModel.responseCode.observeAsState(-1)
 
-    if (parsedChampions == null) {
-        LaunchedEffect(Unit) {
-            fetchChampionsPage(context, pageIndex, null) { code, response ->
-                responseCode = code
-                champions = response
-                displayedChampions = response?: listOf()
-                hasMoreChampions = response?.isNotEmpty() == true
-            }
-        }
-    } else {
-        if (displayedChampions.isEmpty()) {
-            displayedChampions = parsedChampions
-        }
+    LaunchedEffect(Unit) {
+        viewModel.loadChampions(context)
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.rift),
             contentDescription = null,
-            contentScale = ContentScale.FillBounds,
+            contentScale = ContentScale.Crop,
             modifier = Modifier
                 .fillMaxSize()
-                .background(BlueLol)
         )
 
         Column(modifier = Modifier.fillMaxSize()) {
@@ -140,19 +127,7 @@ fun ChampionList(onTeamDraftClick: () -> Unit, onChampionClick: (ChampionModel) 
                         item(span = { GridItemSpan(maxLineSpan) }) {
                             Button(
                                 onClick = {
-                                    pageIndex++
-                                    fetchChampionsPage(context, pageIndex, displayedChampions) { code, response ->
-                                        responseCode = code
-                                        response?.let {
-                                            if (it.isNotEmpty()) {
-                                                displayedChampions = displayedChampions + it
-                                                SharedPreferencesManager.savePageIndex(context, pageIndex)
-                                            } else {
-                                                SharedPreferencesManager.savePageIndex(context, pageIndex)
-                                                hasMoreChampions = false
-                                            }
-                                        }
-                                    }
+                                    viewModel.loadMoreChampions(context)
                                 },
                                 modifier = Modifier
                                     .fillMaxWidth()

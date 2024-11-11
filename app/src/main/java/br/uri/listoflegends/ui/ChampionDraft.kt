@@ -44,23 +44,20 @@ import br.uri.listoflegends.services.getImageFromUrl
 import br.uri.listoflegends.utils.parseChampionsFromJson
 import br.uri.listoflegends.utils.parseItemsFromJson
 import br.uri.listoflegends.utils.parseItemsToJson
+import br.uri.listoflegends.viewModels.ChampionDraftViewModel
 import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun ChampionDraft() {
-    var responseCode by remember { mutableStateOf(-1) }
-    var blueTeam by remember { mutableStateOf<List<Pair<ChampionModel, Int>>>(emptyList()) }
-    var redTeam by remember { mutableStateOf<List<Pair<ChampionModel, Int>>>(emptyList()) }
-    var items by remember { mutableStateOf<List<ItemModel>>(emptyList()) }
-
+fun ChampionDraft(viewModel: ChampionDraftViewModel = viewModel()) {
     val context = LocalContext.current
 
-    val championsFromPreference = SharedPreferencesManager.getChampions(context)
-    val parsedChampions = championsFromPreference?.let { parseChampionsFromJson(it) }
-    var champions by remember { mutableStateOf<List<ChampionModel>?>(parsedChampions) }
+    var blueTeam by remember { mutableStateOf<List<Pair<ChampionModel, Int>>>(viewModel.blueTeam) }
+    var redTeam by remember { mutableStateOf<List<Pair<ChampionModel, Int>>>(viewModel.redTeam) }
+    var champions by remember { mutableStateOf<List<ChampionModel>?>(viewModel.champions) }
 
     val positionIcons = listOf(
         R.drawable.position_challenger_mid,
@@ -71,30 +68,7 @@ fun ChampionDraft() {
     )
 
     LaunchedEffect(Unit) {
-        val itemsFromPreference = SharedPreferencesManager.getItems(context)
-
-        if (itemsFromPreference == null) {
-            fetchItems(context) { code, apiItems ->
-                if (code == 200 && apiItems != null) {
-                    val itemsJson = parseItemsToJson(apiItems)
-                    SharedPreferencesManager.saveItems(context, itemsJson)
-                    items = apiItems
-                    Log.d("ChampionDraft", "Itens carregados da API e salvos: ${items.size}")
-                } else {
-                    Log.e("ChampionDraft", "Falha ao carregar itens da API")
-                }
-            }
-        } else {
-            items = parseItemsFromJson(itemsFromPreference)
-            Log.d("ChampionDraft", "Itens carregados de SharedPreferences: ${items.size}")
-        }
-
-        if (parsedChampions == null) {
-            fetchChampionsPage(context, 1, null) { code, response ->
-                responseCode = code
-                champions = response
-            }
-        }
+        // You can trigger any actions you want when the composable is first loaded
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -114,17 +88,15 @@ fun ChampionDraft() {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            if (champions == null) {
+            if (viewModel.champions == null) {
                 Text(stringResource(id = R.string.loading), color = GoldLol)
             } else {
                 Button(
                     onClick = {
-                        val shuffledChampions = champions!!.shuffled()
-                        blueTeam = shuffledChampions.take(5)
-                            .zip(positionIcons.shuffled())
-                        redTeam = shuffledChampions.drop(5).take(5)
-                            .zip(positionIcons.shuffled())
-                        Log.d("ChampionDraft", "Times sorteados. Itens disponíveis: ${items.size}")
+                        viewModel.shuffleTeams(positionIcons)
+                        blueTeam = viewModel.blueTeam
+                        redTeam = viewModel.redTeam
+                        Log.d("ChampionDraft", "Teams shuffled and state updated")
                     },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -139,27 +111,8 @@ fun ChampionDraft() {
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                OutlinedText(
+                Text(
                     text = stringResource(id = R.string.blue_team),
-                    textColor = Color.Blue
-                )
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .heightIn(max = 300.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    items(blueTeam) { (champion, positionIcon) ->
-                        val randomItems = items.shuffled().take(6)
-                        RandomCard(champion = champion, items = randomItems, positionIcon = positionIcon)
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                OutlinedText(
-                    text = stringResource(id = R.string.red_team),
-                    textColor = Color.Red
                 )
                 LazyColumn(
                     modifier = Modifier
@@ -168,8 +121,25 @@ fun ChampionDraft() {
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     items(redTeam) { (champion, positionIcon) ->
-                        val randomItems = items.shuffled().take(6)
-                        RandomCard(champion = champion, items = randomItems, positionIcon = positionIcon)
+                        val randomItems = viewModel.items.shuffled().take(6)
+                        RandomCard(champion = champion, items = randomItems, positionIcon = positionIcon, viewModel = viewModel)
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Text(
+                    text = stringResource(id = R.string.red_team),
+                )
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(max = 300.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    items(redTeam) { (champion, positionIcon) ->
+                        val randomItems = viewModel.items.shuffled().take(6)
+                        RandomCard(champion = champion, items = randomItems, positionIcon = positionIcon, viewModel = viewModel)
                     }
                 }
             }
@@ -177,33 +147,14 @@ fun ChampionDraft() {
     }
 }
 
-
-
-
 @Composable
-fun OutlinedText(text: String, textColor: Color) {
-    Text(
-        text = text,
-        style = TextStyle(
-            color = textColor,
-            fontSize = 40.sp,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center
-        ),
-        modifier = Modifier.fillMaxWidth(),
-        maxLines = 1,
-        overflow = TextOverflow.Ellipsis
-    )
-}
-
-@Composable
-fun RandomCard(champion: ChampionModel, items: List<ItemModel>, positionIcon: Int) {
+fun RandomCard(champion: ChampionModel, items: List<ItemModel>, positionIcon: Int, viewModel: ChampionDraftViewModel) {
     val coroutineScope = rememberCoroutineScope()
     var bitmap by remember { mutableStateOf<Bitmap?>(null) }
 
     LaunchedEffect(champion.icon) {
-        coroutineScope.launch(Dispatchers.IO) {
-            bitmap = getImageFromUrl(champion.icon)
+        viewModel.getChampionBitmap(champion) { fetchedBitmap ->
+            bitmap = fetchedBitmap
         }
     }
 
@@ -279,7 +230,3 @@ fun RandomCard(champion: ChampionModel, items: List<ItemModel>, positionIcon: In
         }
     }
 }
-
-
-
-
