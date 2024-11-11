@@ -39,6 +39,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -53,6 +54,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import br.uri.listoflegends.R
 import br.uri.listoflegends.models.ChampionModel
 import br.uri.listoflegends.services.getImageFromUrl
@@ -60,13 +62,15 @@ import br.uri.listoflegends.ui.TopBar
 import br.uri.listoflegends.utils.Screen
 import br.uri.listoflegends.utils.formatChampionForSharing
 import br.uri.listoflegends.utils.share
+import br.uri.listoflegends.viewModels.ChampionViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Composable
 fun ChampionScreen(champion: ChampionModel) {
+    val viewModel: ChampionViewModel = viewModel()
+    val bitmap by viewModel.bitmap.observeAsState()
     val coroutineScope = rememberCoroutineScope()
-    var bitmap by remember { mutableStateOf<Bitmap?>(null) }
     val gold = 0xFFC89B3C
     val context = LocalContext.current
     var mediaPlayer: MediaPlayer? = null
@@ -94,11 +98,8 @@ fun ChampionScreen(champion: ChampionModel) {
         stringResource(R.string.attack_speed_per_level)
     )
 
-
     LaunchedEffect(champion.icon) {
-        coroutineScope.launch(Dispatchers.IO) {
-            bitmap = getImageFromUrl(champion.icon)
-        }
+        viewModel.loadChampionImage(champion)
     }
 
     Scaffold { paddingValues ->
