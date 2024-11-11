@@ -65,6 +65,7 @@ dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.testng)
     testImplementation(libs.androidx.runner)
+    testImplementation(libs.junit.jupiter)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
@@ -76,7 +77,14 @@ dependencies {
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.junit)
+
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
+    debugImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
+    testImplementation("org.mockito:mockito-core:3.11.2")
+    testImplementation("org.robolectric:robolectric:4.13")
+    debugImplementation("org.robolectric:robolectric:4.13")
+    debugImplementation("org.mockito:mockito-core:3.11.2")
+
     androidTestImplementation ("androidx.test.espresso:espresso-core:3.5.1")
 
     implementation(libs.androidx.core.ktx)
@@ -85,6 +93,7 @@ dependencies {
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation("org.mockito:mockito-android:3.+")
 
 
 }
