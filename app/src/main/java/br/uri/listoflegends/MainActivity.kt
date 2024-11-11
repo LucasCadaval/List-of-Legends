@@ -25,25 +25,26 @@ import br.uri.listoflegends.utils.Screen
 import android.content.res.Configuration
 import android.util.Log
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import br.com.uri.champions.ui.theme.ListofLegendsTheme
 import br.uri.listoflegends.services.SharedPreferencesManager
+import br.uri.listoflegends.viewModels.MainViewModel
 import java.util.Locale
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 class MainActivity : ComponentActivity() {
+    private val viewModel: MainViewModel by viewModels()
+
     @SuppressLint("MissingSuperCall")
     override fun onBackPressed() {}
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val context = this
         val locale = Locale.getDefault()
         val languageCode = locale.language
         val countryCode = locale.country
-        setLocale(languageCode, countryCode)
-//        setLocale("pt", "BR")
-//         SharedPreferencesManager.clearChampions(context)
-//         SharedPreferencesManager.clearPageIndex(context)
-
+        viewModel.setLocale(languageCode, countryCode, resources)
 
         with(NotificationManagerCompat.from(this)) {
             if (ActivityCompat.checkSelfPermission(
@@ -61,14 +62,14 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             ListofLegendsTheme {
-                var currentScreen by remember { mutableStateOf<Screen>(Screen.Splash) }
+                val currentScreen by viewModel.currentScreen
 
                 Scaffold(
                     topBar = {
                         if (currentScreen is Screen.ChampionDetail || currentScreen is Screen.ChampionDraft) {
                             TopBar(
                                 onBackPressed = {
-                                    currentScreen = Screen.ChampionList
+                                    viewModel.setCurrentScreen(Screen.ChampionList)
                                 }
                             )
                         }
@@ -76,13 +77,13 @@ class MainActivity : ComponentActivity() {
                 ) { paddingValues ->
                     when (currentScreen) {
                         is Screen.Splash -> SplashScreen {
-                            currentScreen = Screen.ChampionList
+                            viewModel.setCurrentScreen(Screen.ChampionList)
                         }
                         is Screen.ChampionList -> ChampionList(
                             onChampionClick = { champion ->
-                                currentScreen = Screen.ChampionDetail(champion)
+                                viewModel.setCurrentScreen(Screen.ChampionDetail(champion))
                             },
-                            onTeamDraftClick = { currentScreen = Screen.ChampionDraft}
+                            onTeamDraftClick = { viewModel.setCurrentScreen(Screen.ChampionDraft) }
                         )
                         is Screen.ChampionDetail -> {
                             val champion = (currentScreen as Screen.ChampionDetail).champion
@@ -93,12 +94,5 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-    }
-    private fun setLocale(languageCode: String, countryCode: String) {
-        val locale = Locale(languageCode, countryCode)
-        Locale.setDefault(locale)
-        val config = Configuration()
-        config.setLocale(locale)
-        resources.updateConfiguration(config, resources.displayMetrics)
     }
 }

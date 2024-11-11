@@ -61,7 +61,10 @@ dependencies {
     implementation(libs.firebase.crashlytics.buildtools)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.junit.ktx)
+    implementation(libs.androidx.rules)
     testImplementation(libs.junit)
+    testImplementation(libs.testng)
+    testImplementation(libs.androidx.runner)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
@@ -71,21 +74,15 @@ dependencies {
     implementation(libs.coil.compose)
 
     testImplementation(libs.mockk)
-    testImplementation(libs.mockito.kotlin)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.junit)
-    testImplementation("org.mockito:mockito-core:5.0.0") // Use a versão mais recente do Mockito
-    testImplementation("org.mockito.kotlin:mockito-kotlin:4.1.0")
-    // Testes de Instrumentação
-    androidTestImplementation ("androidx.test.ext:junit:1.1.5")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
     androidTestImplementation ("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation ("androidx.test:runner:1.5.2")
-    androidTestImplementation ("androidx.test:rules:1.5.2")
-    // Core AndroidX dependencies
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
 
-    // JUnit and testing dependencies
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
