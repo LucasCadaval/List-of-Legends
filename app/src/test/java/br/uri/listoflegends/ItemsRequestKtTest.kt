@@ -23,7 +23,7 @@ import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [26])
+@Config(sdk = [26], manifest=Config.NONE)
 class FetchItemsTest {
     private lateinit var mockWebServer: MockWebServer
 
