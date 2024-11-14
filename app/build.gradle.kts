@@ -97,6 +97,8 @@ dependencies {
     // Coroutines for testing
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
 
+    testImplementation("org.robolectric:robolectric:4.10.3")
+
     // Core AndroidX dependencies
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
