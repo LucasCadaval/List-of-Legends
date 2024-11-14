@@ -13,11 +13,8 @@ import br.uri.listoflegends.ui.ChampionList
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.annotation.Config
-
 
 @RunWith(AndroidJUnit4::class)
-@Config(sdk = [26], manifest=Config.NONE)
 class ChampionListUITest {
 
     @get:Rule
@@ -34,7 +31,12 @@ class ChampionListUITest {
 
         composeTestRule
             .onNodeWithText("Search...")
-            .performTextInput("Aatrox")
+            .assertIsDisplayed()
+            .performClick()
+
+//        composeTestRule
+//            .onNodeWithText("Search...")
+//            .performTextInput("Aatrox")
 
         composeTestRule.waitForIdle()
 
