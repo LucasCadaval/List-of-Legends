@@ -8,7 +8,7 @@ import org.junit.Before
 import org.junit.Test
 
 
-class RequestTest {
+class RequestChampionTest {
 
     private lateinit var champions: List<ChampionModel>
 
