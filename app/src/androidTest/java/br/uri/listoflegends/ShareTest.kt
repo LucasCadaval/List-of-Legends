@@ -21,7 +21,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class SoundTest {
+class ShareTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
@@ -29,7 +29,7 @@ class SoundTest {
     private val context: Context = ApplicationProvider.getApplicationContext()
 
     @Test
-    fun clickOnAatroxAndPlaySound() {
+    fun clickOnAatroxAndShare() {
         val currentScreen = mutableStateOf<Screen>(Screen.ChampionList)
 
         composeTestRule.setContent {
@@ -60,7 +60,7 @@ class SoundTest {
             .performClick()
 
         composeTestRule
-            .onNodeWithTag("SoundIcon")
+            .onNodeWithTag("ShareIcon")
             .assertIsDisplayed()
             .performClick()
 

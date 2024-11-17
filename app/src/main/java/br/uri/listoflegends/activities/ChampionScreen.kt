@@ -158,6 +158,9 @@ fun ChampionScreen(champion: ChampionModel) {
                                     val formattedChampion = formatChampionForSharing(champion)
                                     share(context, formattedChampion, bitmap)
                                 },
+                                modifier = Modifier
+                                    .size(24.dp)
+                                    .testTag("ShareIcon"),
                                 colors = IconButtonDefaults.iconButtonColors(
                                     contentColor = Color(gold),
                                     containerColor = Color.Transparent
