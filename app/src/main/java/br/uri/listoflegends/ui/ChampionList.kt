@@ -5,6 +5,7 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
@@ -14,7 +15,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,6 +41,7 @@ import br.uri.listoflegends.utils.parseChampionsFromJson
 import br.uri.listoflegends.utils.parseChampionsToJson
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChampionList(onTeamDraftClick: () -> Unit, onChampionClick: (ChampionModel) -> Unit) {
     var searchQuery by remember { mutableStateOf("") }
@@ -78,28 +83,45 @@ fun ChampionList(onTeamDraftClick: () -> Unit, onChampionClick: (ChampionModel) 
         )
 
         Column(modifier = Modifier.fillMaxSize()) {
-            Box(
+//            BasicTextField(
+//                value = searchQuery,
+//                onValueChange = { searchQuery = it },
+//                textStyle = TextStyle(color = Color.White),
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .focusable(),
+//                singleLine = true,
+//                decorationBox = { innerTextField ->
+//                    Box(
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                    ) {
+//                        if (searchQuery.isEmpty()) {
+//                            Text(
+//                                text = stringResource(id = R.string.search_hint),
+//                                color = Color.Gray
+//                            )
+//                        }
+//                        innerTextField()
+//                    }
+//                }
+//            )
+            TextField(
+                value = searchQuery,
+                onValueChange = { searchQuery = it },
+                placeholder = { Text(text = stringResource(id = R.string.search_hint)) },
+                shape = RoundedCornerShape(16.dp),
+                colors = TextFieldDefaults.textFieldColors(
+                    focusedTextColor = Color.White,
+                    containerColor = BlueLol,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
+                ),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
-                    .border(2.dp, GoldLol, shape = RoundedCornerShape(16.dp))
-                    .background(BlueLol, shape = RoundedCornerShape(16.dp))
-                    .padding(16.dp)
-            ) {
-                if (searchQuery.isEmpty()) {
-                    Text(
-                        text = stringResource(id = R.string.search_hint),
-                        color = Color.Gray,
-                    )
-                }
-
-                BasicTextField(
-                    value = searchQuery,
-                    onValueChange = { searchQuery = it },
-                    textStyle = TextStyle(color = Color.White),
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
+                    .padding(vertical = 8.dp, horizontal = 16.dp)
+                    .border(2.dp, GoldLol, shape = RoundedCornerShape(16.dp)),
+            )
 
             Button(
                 onClick = {

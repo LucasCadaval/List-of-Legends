@@ -34,14 +34,15 @@ class ChampionListUITest {
             .assertIsDisplayed()
             .performClick()
 
-//        composeTestRule
-//            .onNodeWithText("Search...")
-//            .performTextInput("Aatrox")
+        composeTestRule
+            .onNodeWithText("Search...")
+            .performClick()
+            .performTextInput("aphelios")
 
         composeTestRule.waitForIdle()
 
         composeTestRule
-            .onNodeWithText("Aatrox")
+            .onNodeWithText("Aphelios")
             .assertIsDisplayed()
             .performClick()
     }
