@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.HorizontalAlignmentLine
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -131,6 +132,7 @@ fun ChampionList(onTeamDraftClick: () -> Unit, onChampionClick: (ChampionModel) 
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
                     .align(Alignment.CenterHorizontally)
+                    .testTag("team_draft_button")
                     .border(2.dp, GoldLol, shape = RoundedCornerShape(16.dp))
                     .height(36.dp),
                 colors = androidx.compose.material3.ButtonDefaults.buttonColors(containerColor = BlueLol)

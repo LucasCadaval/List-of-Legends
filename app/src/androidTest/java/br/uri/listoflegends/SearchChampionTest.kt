@@ -39,7 +39,7 @@ class SearchChampionTest {
             .performClick()
 
         composeTestRule
-            .onNodeWithText("Search...")
+            .onNodeWithText(searchHint)
             .performClick()
             .performTextInput("aphelios")
 
