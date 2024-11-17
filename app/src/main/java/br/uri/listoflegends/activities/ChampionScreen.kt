@@ -49,6 +49,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -186,6 +187,9 @@ fun ChampionScreen(champion: ChampionModel) {
                                         Toast.makeText(context, audioNotFoundString, Toast.LENGTH_SHORT).show()
                                     }
                                 },
+                                modifier = Modifier
+                                    .size(24.dp)
+                                    .testTag("SoundIcon"),
                                 colors = IconButtonDefaults.iconButtonColors(
                                     contentColor = Color(gold),
                                     containerColor = Color.Transparent
