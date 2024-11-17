@@ -4,7 +4,9 @@ import android.content.Context
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.isDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.core.app.ApplicationProvider
@@ -29,8 +31,6 @@ class SoundTest {
     fun clickOnAatroxAndPlaySound() {
         val currentScreen = mutableStateOf<Screen>(Screen.ChampionList)
 
-        Thread.sleep(1000)
-
         composeTestRule.setContent {
             when (val screen = currentScreen.value) {
                 is Screen.ChampionList -> {
@@ -49,21 +49,19 @@ class SoundTest {
             }
         }
 
-        Thread.sleep(2000)
+        composeTestRule.waitUntil(3000){
+            !composeTestRule.onNodeWithText(context.getString(R.string.loading)).assertIsDisplayed().isDisplayed()
+        }
 
         composeTestRule
             .onNodeWithText("Aatrox")
             .assertIsDisplayed()
             .performClick()
 
-        Thread.sleep(2000)
-
         composeTestRule
-            .onNodeWithText("SoundIcon")
+            .onNodeWithTag("SoundIcon")
             .assertIsDisplayed()
             .performClick()
-
-        Thread.sleep(2000)
 
     }
 }
