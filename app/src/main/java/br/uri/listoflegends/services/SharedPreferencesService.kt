@@ -9,10 +9,10 @@ import br.uri.listoflegends.utils.parseItemsFromJson
 import br.uri.listoflegends.utils.parseItemsToJson
 
 object SharedPreferencesManager {
-    private const val PREF_NAME = "CHAMPION_PREF"
-    private const val CHAMPIONS = "CHAMPIONS"
-    private const val ITEMS = "ITEMS"  // Adiciona a chave para itens
-    private const val PAGE_INDEX = "page_index"
+    const val PREF_NAME = "CHAMPION_PREF"
+    const val CHAMPIONS = "CHAMPIONS"
+    const val ITEMS = "ITEMS"
+    const val PAGE_INDEX = "page_index"
 
     fun savePageIndex(context: Context, pageIndex: Int) {
         val sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)

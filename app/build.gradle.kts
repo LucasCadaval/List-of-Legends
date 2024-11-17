@@ -74,13 +74,31 @@ dependencies {
     testImplementation(libs.mockito.kotlin)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.junit)
-    testImplementation("org.mockito:mockito-core:5.0.0") // Use a versão mais recente do Mockito
+    testImplementation("org.mockito:mockito-core:5.0.0")
     testImplementation("org.mockito.kotlin:mockito-kotlin:4.1.0")
     // Testes de Instrumentação
-    androidTestImplementation ("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation("androidx.test:runner:1.5.2")
+    androidTestImplementation("androidx.test:rules:1.6.1")
+
+
+    testImplementation(libs.junit)
+    androidTestImplementation("androidx.test:runner:1.5.2")
+    implementation("com.squareup.okhttp3:mockwebserver:4.12.0")
+
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation ("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation ("androidx.test:runner:1.5.2")
-    androidTestImplementation ("androidx.test:rules:1.5.2")
+
+    // Mockito for mocking
+    testImplementation("org.mockito:mockito-core:4.8.0")
+    androidTestImplementation("org.mockito:mockito-android:4.8.0")
+
+    // Coroutines for testing
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
+
+    testImplementation("org.robolectric:robolectric:4.10.3")
+
     // Core AndroidX dependencies
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
