@@ -1,14 +1,16 @@
 package br.uri.listoflegends
 
+import android.content.Context
+import android.provider.Settings.Global.getString
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import br.uri.listoflegends.models.ChampionModel
-import br.uri.listoflegends.models.Sprite
-import br.uri.listoflegends.models.Stats
+import androidx.test.platform.app.InstrumentationRegistry
 import br.uri.listoflegends.ui.ChampionList
 import org.junit.Rule
 import org.junit.Test
@@ -20,8 +22,14 @@ class ChampionListUITest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
+    private val context: Context = ApplicationProvider.getApplicationContext()
+
+
     @Test
     fun searchAndClickOnAatrox() {
+
+        val searchHint: String = context.getString(R.string.search_hint)
+
         composeTestRule.setContent {
             ChampionList(
                 onTeamDraftClick = {},
@@ -30,7 +38,7 @@ class ChampionListUITest {
         }
 
         composeTestRule
-            .onNodeWithText("Search...")
+            .onNodeWithText(searchHint)
             .assertIsDisplayed()
             .performClick()
 
