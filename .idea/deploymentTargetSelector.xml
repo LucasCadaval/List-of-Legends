@@ -13,6 +13,7 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
+
       <SelectionState runConfigName="ChampionDraftTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>

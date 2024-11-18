@@ -44,6 +44,7 @@ import br.uri.listoflegends.services.getImageFromUrl
 import br.uri.listoflegends.utils.parseChampionsFromJson
 import br.uri.listoflegends.utils.parseItemsFromJson
 import br.uri.listoflegends.utils.parseItemsToJson
+import br.uri.listoflegends.utils.randomizeChampionsAndItems
 import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 import kotlinx.coroutines.Dispatchers
@@ -119,11 +120,9 @@ fun ChampionDraft() {
             } else {
                 Button(
                     onClick = {
-                        val shuffledChampions = champions!!.shuffled()
-                        blueTeam = shuffledChampions.take(5)
-                            .zip(positionIcons.shuffled())
-                        redTeam = shuffledChampions.drop(5).take(5)
-                            .zip(positionIcons.shuffled())
+                        val (blueTeamWithItems, redTeamWithItems) = randomizeChampionsAndItems(champions!!, items)
+                        blueTeam = blueTeamWithItems.map { it.first to positionIcons.random() }
+                        redTeam = redTeamWithItems.map { it.first to positionIcons.random() }
                         Log.d("ChampionDraft", "Times sorteados. Itens disponíveis: ${items.size}")
                     },
                     modifier = Modifier
@@ -176,9 +175,6 @@ fun ChampionDraft() {
         }
     }
 }
-
-
-
 
 @Composable
 fun OutlinedText(text: String, textColor: Color) {
@@ -279,7 +275,3 @@ fun RandomCard(champion: ChampionModel, items: List<ItemModel>, positionIcon: In
         }
     }
 }
-
-
-
-
